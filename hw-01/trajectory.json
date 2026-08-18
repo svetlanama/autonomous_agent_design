@@ -1,0 +1,1154 @@
+{
+  "runs": [
+    {
+      "tag": "demo_calculator",
+      "query": "Порахуй 15% від 2400 і додай 300 — скільки вийде разом?",
+      "provider": "scripted-offline",
+      "config": {
+        "max_steps": 8,
+        "timeout_s": 60.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "calculator",
+          "args": {
+            "expression": "2400*0.15+300"
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.0022,
+      "halted": false,
+      "halt_reason": "",
+      "final": {
+        "answer": "Підсумок спостережень: calculator → {\"expression\": \"2400*0.15+300\", \"result\": 660.0}",
+        "tools_used": [
+          "calculator"
+        ],
+        "confidence": 0.9
+      },
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (calculator).",
+          "tool_calls": [
+            {
+              "name": "calculator",
+              "args": {
+                "expression": "2400*0.15+300"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "calculator",
+          "args": {
+            "expression": "2400*0.15+300"
+          },
+          "observation": "{\"expression\": \"2400*0.15+300\", \"result\": 660.0}",
+          "is_error": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Підсумок спостережень: calculator → {\"expression\": \"2400*0.15+300\", \"result\": 660.0}",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Підсумок спостережень: calculator → {\"expression\": \"2400*0.15+300\", \"result\": 660.0}",
+          "tools_used": [
+            "calculator"
+          ],
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "tag": "demo_multi_tool",
+      "query": "Плануємо бюджет: конвертуй 250 USD у EUR і скажи, яка погода в Києві.",
+      "provider": "scripted-offline",
+      "config": {
+        "max_steps": 8,
+        "timeout_s": 60.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "convert_currency",
+          "args": {
+            "amount": 250,
+            "from_currency": "USD",
+            "to_currency": "EUR"
+          },
+          "is_error": false
+        },
+        {
+          "tool": "get_weather",
+          "args": {
+            "city": "Київ"
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.0018,
+      "halted": false,
+      "halt_reason": "",
+      "final": {
+        "answer": "Підсумок спостережень: convert_currency → {\"amount\": 250.0, \"from\": \"USD\", \"to\": \"EUR\", \"rate\": 0.92, \"result\": 230.0}; get_weather → {\"city\": \"Київ\", \"temp_c\": 18.5, \"description\": \"мінлива хмарність\", \"humidity_percent\": 62}",
+        "tools_used": [
+          "convert_currency",
+          "get_weather"
+        ],
+        "confidence": 0.9
+      },
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (convert_currency, get_weather).",
+          "tool_calls": [
+            {
+              "name": "convert_currency",
+              "args": {
+                "amount": 250,
+                "from_currency": "USD",
+                "to_currency": "EUR"
+              }
+            },
+            {
+              "name": "get_weather",
+              "args": {
+                "city": "Київ"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "convert_currency",
+          "args": {
+            "amount": 250,
+            "from_currency": "USD",
+            "to_currency": "EUR"
+          },
+          "observation": "{\"amount\": 250.0, \"from\": \"USD\", \"to\": \"EUR\", \"rate\": 0.92, \"result\": 230.0}",
+          "is_error": false
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "get_weather",
+          "args": {
+            "city": "Київ"
+          },
+          "observation": "{\"city\": \"Київ\", \"temp_c\": 18.5, \"description\": \"мінлива хмарність\", \"humidity_percent\": 62}",
+          "is_error": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Підсумок спостережень: convert_currency → {\"amount\": 250.0, \"from\": \"USD\", \"to\": \"EUR\", \"rate\": 0.92, \"result\": 230.0}; get_weather → {\"city\": \"Київ\", \"temp_c\": 18.5, \"description\": \"мінлива хмарність\", \"humidity_percent\": 62}",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Підсумок спостережень: convert_currency → {\"amount\": 250.0, \"from\": \"USD\", \"to\": \"EUR\", \"rate\": 0.92, \"result\": 230.0}; get_weather → {\"city\": \"Київ\", \"temp_c\": 18.5, \"description\": \"мінлива хмарність\", \"humidity_percent\": 62}",
+          "tools_used": [
+            "convert_currency",
+            "get_weather"
+          ],
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "tag": "demo_validation_recovery",
+      "query": "Конвертуй -100 USD у XYZ, і якщо не вийде — конвертуй 100 USD у злоті (PLN).",
+      "provider": "scripted-offline",
+      "config": {
+        "max_steps": 8,
+        "timeout_s": 60.0,
+        "detect_loops": true
+      },
+      "steps": 3,
+      "tool_calls": [
+        {
+          "tool": "convert_currency",
+          "args": {
+            "amount": -100,
+            "from_currency": "USD",
+            "to_currency": "XYZ"
+          },
+          "is_error": true
+        },
+        {
+          "tool": "convert_currency",
+          "args": {
+            "amount": 100,
+            "from_currency": "USD",
+            "to_currency": "PLN"
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.0023,
+      "halted": false,
+      "halt_reason": "",
+      "final": {
+        "answer": "Підсумок спостережень: convert_currency → ERROR [ValidationError]: Сума мусить бути більшою за 0; Невідома валюта 'XYZ'. Доступні: USD, EUR, UAH, PLN, GBP; convert_currency → {\"amount\": 100.0, \"from\": \"USD\", \"to\": \"PLN\", \"rate\": 3.98, \"result\": 398.0}",
+        "tools_used": [
+          "convert_currency"
+        ],
+        "confidence": 0.9
+      },
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (convert_currency).",
+          "tool_calls": [
+            {
+              "name": "convert_currency",
+              "args": {
+                "amount": -100,
+                "from_currency": "USD",
+                "to_currency": "XYZ"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "convert_currency",
+          "args": {
+            "amount": -100,
+            "from_currency": "USD",
+            "to_currency": "XYZ"
+          },
+          "observation": "ERROR [ValidationError]: Сума мусить бути більшою за 0; Невідома валюта 'XYZ'. Доступні: USD, EUR, UAH, PLN, GBP",
+          "is_error": true
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (convert_currency).",
+          "tool_calls": [
+            {
+              "name": "convert_currency",
+              "args": {
+                "amount": 100,
+                "from_currency": "USD",
+                "to_currency": "PLN"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "convert_currency",
+          "args": {
+            "amount": 100,
+            "from_currency": "USD",
+            "to_currency": "PLN"
+          },
+          "observation": "{\"amount\": 100.0, \"from\": \"USD\", \"to\": \"PLN\", \"rate\": 3.98, \"result\": 398.0}",
+          "is_error": false
+        },
+        {
+          "step": 2,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Підсумок спостережень: convert_currency → ERROR [ValidationError]: Сума мусить бути більшою за 0; Невідома валюта 'XYZ'. Доступні: USD, EUR, UAH, PLN, GBP; convert_currency → {\"amount\": 100.0, \"from\": \"USD\", \"to\": \"PLN\", \"rate\": 3.98, \"result\": 398.0}",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 3,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Підсумок спостережень: convert_currency → ERROR [ValidationError]: Сума мусить бути більшою за 0; Невідома валюта 'XYZ'. Доступні: USD, EUR, UAH, PLN, GBP; convert_currency → {\"amount\": 100.0, \"from\": \"USD\", \"to\": \"PLN\", \"rate\": 3.98, \"result\": 398.0}",
+          "tools_used": [
+            "convert_currency"
+          ],
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "tag": "guardrail_max_steps",
+      "query": "Порахуй довгий ланцюг обчислень крок за кроком.",
+      "provider": "scripted-offline",
+      "config": {
+        "max_steps": 3,
+        "timeout_s": 60.0,
+        "detect_loops": true
+      },
+      "steps": 3,
+      "tool_calls": [
+        {
+          "tool": "calculator",
+          "args": {
+            "expression": "1*1+1"
+          },
+          "is_error": false
+        },
+        {
+          "tool": "calculator",
+          "args": {
+            "expression": "2*2+1"
+          },
+          "is_error": false
+        },
+        {
+          "tool": "calculator",
+          "args": {
+            "expression": "3*3+1"
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.0022,
+      "halted": true,
+      "halt_reason": "max_steps: досягнуто ліміт 3 ітерацій",
+      "final": {
+        "answer": "Виконання зупинено захисним механізмом → max_steps: досягнуто ліміт 3 ітерацій. Часткові дані отримано інструментами: calculator.",
+        "tools_used": [
+          "calculator"
+        ],
+        "confidence": 0.0
+      },
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.0,
+          "content": "Thought: потрібні дані з інструментів (calculator).",
+          "tool_calls": [
+            {
+              "name": "calculator",
+              "args": {
+                "expression": "1*1+1"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "calculator",
+          "args": {
+            "expression": "1*1+1"
+          },
+          "observation": "{\"expression\": \"1*1+1\", \"result\": 2.0}",
+          "is_error": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (calculator).",
+          "tool_calls": [
+            {
+              "name": "calculator",
+              "args": {
+                "expression": "2*2+1"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "calculator",
+          "args": {
+            "expression": "2*2+1"
+          },
+          "observation": "{\"expression\": \"2*2+1\", \"result\": 5.0}",
+          "is_error": false
+        },
+        {
+          "step": 2,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Thought: потрібні дані з інструментів (calculator).",
+          "tool_calls": [
+            {
+              "name": "calculator",
+              "args": {
+                "expression": "3*3+1"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 3,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "calculator",
+          "args": {
+            "expression": "3*3+1"
+          },
+          "observation": "{\"expression\": \"3*3+1\", \"result\": 10.0}",
+          "is_error": false
+        },
+        {
+          "step": 3,
+          "type": "guardrail",
+          "elapsed_s": 0.002,
+          "reason": "max_steps: досягнуто ліміт 3 ітерацій"
+        },
+        {
+          "step": 3,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Виконання зупинено захисним механізмом → max_steps: досягнуто ліміт 3 ітерацій. Часткові дані отримано інструментами: calculator.",
+          "tools_used": [
+            "calculator"
+          ],
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "tag": "guardrail_timeout",
+      "query": "Порахуй довгий ланцюг обчислень крок за кроком.",
+      "provider": "scripted-offline",
+      "config": {
+        "max_steps": 8,
+        "timeout_s": 0.15,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "calculator",
+          "args": {
+            "expression": "1*1+1"
+          },
+          "is_error": false
+        },
+        {
+          "tool": "calculator",
+          "args": {
+            "expression": "2*2+1"
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.209,
+      "halted": true,
+      "halt_reason": "timeout: перевищено 0.15 с (пройшло 0.21 с)",
+      "final": {
+        "answer": "Виконання зупинено захисним механізмом → timeout: перевищено 0.15 с (пройшло 0.21 с). Часткові дані отримано інструментами: calculator.",
+        "tools_used": [
+          "calculator"
+        ],
+        "confidence": 0.0
+      },
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.101,
+          "content": "Thought: потрібні дані з інструментів (calculator).",
+          "tool_calls": [
+            {
+              "name": "calculator",
+              "args": {
+                "expression": "1*1+1"
+              }
+            }
+          ],
+          "llm_latency_s": 0.1
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.101,
+          "tool": "calculator",
+          "args": {
+            "expression": "1*1+1"
+          },
+          "observation": "{\"expression\": \"1*1+1\", \"result\": 2.0}",
+          "is_error": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.207,
+          "content": "Thought: потрібні дані з інструментів (calculator).",
+          "tool_calls": [
+            {
+              "name": "calculator",
+              "args": {
+                "expression": "2*2+1"
+              }
+            }
+          ],
+          "llm_latency_s": 0.105
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.208,
+          "tool": "calculator",
+          "args": {
+            "expression": "2*2+1"
+          },
+          "observation": "{\"expression\": \"2*2+1\", \"result\": 5.0}",
+          "is_error": false
+        },
+        {
+          "step": 2,
+          "type": "guardrail",
+          "elapsed_s": 0.209,
+          "reason": "timeout: перевищено 0.15 с (пройшло 0.21 с)"
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.209,
+          "answer": "Виконання зупинено захисним механізмом → timeout: перевищено 0.15 с (пройшло 0.21 с). Часткові дані отримано інструментами: calculator.",
+          "tools_used": [
+            "calculator"
+          ],
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "tag": "guardrail_loop_detection",
+      "query": "Перевір зациклення: питай погоду в Львові знову і знову.",
+      "provider": "scripted-offline",
+      "config": {
+        "max_steps": 8,
+        "timeout_s": 60.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "get_weather",
+          "args": {
+            "city": "Львів"
+          },
+          "is_error": false
+        },
+        {
+          "tool": "get_weather",
+          "args": {
+            "city": "Львів"
+          },
+          "is_error": true
+        }
+      ],
+      "duration_s": 0.0029,
+      "halted": true,
+      "halt_reason": "loop: повторний виклик get_weather({\"city\": \"Львів\"})",
+      "final": {
+        "answer": "Виконання зупинено захисним механізмом → loop: повторний виклик get_weather({\"city\": \"Львів\"}). Часткові дані отримано інструментами: get_weather.",
+        "tools_used": [
+          "get_weather"
+        ],
+        "confidence": 0.0
+      },
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_weather).",
+          "tool_calls": [
+            {
+              "name": "get_weather",
+              "args": {
+                "city": "Львів"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "get_weather",
+          "args": {
+            "city": "Львів"
+          },
+          "observation": "{\"city\": \"Львів\", \"temp_c\": 15.0, \"description\": \"дощ\", \"humidity_percent\": 81}",
+          "is_error": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Thought: потрібні дані з інструментів (get_weather).",
+          "tool_calls": [
+            {
+              "name": "get_weather",
+              "args": {
+                "city": "Львів"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.003,
+          "tool": "get_weather",
+          "args": {
+            "city": "Львів"
+          },
+          "observation": "ERROR [LoopDetected]: цей виклик уже виконувався, змініть аргументи",
+          "is_error": true
+        },
+        {
+          "step": 2,
+          "type": "guardrail",
+          "elapsed_s": 0.003,
+          "reason": "loop: повторний виклик get_weather({\"city\": \"Львів\"})"
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.003,
+          "answer": "Виконання зупинено захисним механізмом → loop: повторний виклик get_weather({\"city\": \"Львів\"}). Часткові дані отримано інструментами: get_weather.",
+          "tools_used": [
+            "get_weather"
+          ],
+          "confidence": 0.0
+        }
+      ]
+    },
+    {
+      "tag": "TC1",
+      "query": "Порахуй 15% від 2400 і додай 300 — скільки вийде разом?",
+      "provider": "scripted-offline",
+      "config": {
+        "max_steps": 8,
+        "timeout_s": 60.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "calculator",
+          "args": {
+            "expression": "2400*0.15+300"
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.0021,
+      "halted": false,
+      "halt_reason": "",
+      "final": {
+        "answer": "Підсумок спостережень: calculator → {\"expression\": \"2400*0.15+300\", \"result\": 660.0}",
+        "tools_used": [
+          "calculator"
+        ],
+        "confidence": 0.9
+      },
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (calculator).",
+          "tool_calls": [
+            {
+              "name": "calculator",
+              "args": {
+                "expression": "2400*0.15+300"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "calculator",
+          "args": {
+            "expression": "2400*0.15+300"
+          },
+          "observation": "{\"expression\": \"2400*0.15+300\", \"result\": 660.0}",
+          "is_error": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Підсумок спостережень: calculator → {\"expression\": \"2400*0.15+300\", \"result\": 660.0}",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Підсумок спостережень: calculator → {\"expression\": \"2400*0.15+300\", \"result\": 660.0}",
+          "tools_used": [
+            "calculator"
+          ],
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "tag": "TC2",
+      "query": "Плануємо бюджет: конвертуй 250 USD у EUR і скажи, яка погода в Києві.",
+      "provider": "scripted-offline",
+      "config": {
+        "max_steps": 8,
+        "timeout_s": 60.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "convert_currency",
+          "args": {
+            "amount": 250,
+            "from_currency": "USD",
+            "to_currency": "EUR"
+          },
+          "is_error": false
+        },
+        {
+          "tool": "get_weather",
+          "args": {
+            "city": "Київ"
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.0018,
+      "halted": false,
+      "halt_reason": "",
+      "final": {
+        "answer": "Підсумок спостережень: convert_currency → {\"amount\": 250.0, \"from\": \"USD\", \"to\": \"EUR\", \"rate\": 0.92, \"result\": 230.0}; get_weather → {\"city\": \"Київ\", \"temp_c\": 18.5, \"description\": \"мінлива хмарність\", \"humidity_percent\": 62}",
+        "tools_used": [
+          "convert_currency",
+          "get_weather"
+        ],
+        "confidence": 0.9
+      },
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (convert_currency, get_weather).",
+          "tool_calls": [
+            {
+              "name": "convert_currency",
+              "args": {
+                "amount": 250,
+                "from_currency": "USD",
+                "to_currency": "EUR"
+              }
+            },
+            {
+              "name": "get_weather",
+              "args": {
+                "city": "Київ"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "convert_currency",
+          "args": {
+            "amount": 250,
+            "from_currency": "USD",
+            "to_currency": "EUR"
+          },
+          "observation": "{\"amount\": 250.0, \"from\": \"USD\", \"to\": \"EUR\", \"rate\": 0.92, \"result\": 230.0}",
+          "is_error": false
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "get_weather",
+          "args": {
+            "city": "Київ"
+          },
+          "observation": "{\"city\": \"Київ\", \"temp_c\": 18.5, \"description\": \"мінлива хмарність\", \"humidity_percent\": 62}",
+          "is_error": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Підсумок спостережень: convert_currency → {\"amount\": 250.0, \"from\": \"USD\", \"to\": \"EUR\", \"rate\": 0.92, \"result\": 230.0}; get_weather → {\"city\": \"Київ\", \"temp_c\": 18.5, \"description\": \"мінлива хмарність\", \"humidity_percent\": 62}",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Підсумок спостережень: convert_currency → {\"amount\": 250.0, \"from\": \"USD\", \"to\": \"EUR\", \"rate\": 0.92, \"result\": 230.0}; get_weather → {\"city\": \"Київ\", \"temp_c\": 18.5, \"description\": \"мінлива хмарність\", \"humidity_percent\": 62}",
+          "tools_used": [
+            "convert_currency",
+            "get_weather"
+          ],
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "tag": "TC3",
+      "query": "Проаналізуй текст: ReAct агент чергує міркування та дії. Дії дають спостереження, а спостереження дають нові міркування.",
+      "provider": "scripted-offline",
+      "config": {
+        "max_steps": 8,
+        "timeout_s": 60.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "analyze_text",
+          "args": {
+            "text": "Проаналізуй текст: ReAct агент чергує міркування та дії. Дії дають спостереження, а спостереження дають нові міркування.",
+            "top_n": 3
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.0015,
+      "halted": false,
+      "halt_reason": "",
+      "final": {
+        "answer": "Підсумок спостережень: analyze_text → {\"chars\": 120, \"words\": 16, \"sentences\": 2, \"avg_word_length\": 6.31, \"top_words\": [{\"word\": \"міркування\", \"count\": 2}, {\"word\": \"дають\", \"count\": 2}, {\"word\": \"спостереження\", \"count\": 2}]}",
+        "tools_used": [
+          "analyze_text"
+        ],
+        "confidence": 0.9
+      },
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.0,
+          "content": "Thought: потрібні дані з інструментів (analyze_text).",
+          "tool_calls": [
+            {
+              "name": "analyze_text",
+              "args": {
+                "text": "Проаналізуй текст: ReAct агент чергує міркування та дії. Дії дають спостереження, а спостереження дають нові міркування.",
+                "top_n": 3
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "analyze_text",
+          "args": {
+            "text": "Проаналізуй текст: ReAct агент чергує міркування та дії. Дії дають спостереження, а спостереження дають нові міркування.",
+            "top_n": 3
+          },
+          "observation": "{\"chars\": 120, \"words\": 16, \"sentences\": 2, \"avg_word_length\": 6.31, \"top_words\": [{\"word\": \"міркування\", \"count\": 2}, {\"word\": \"дають\", \"count\": 2}, {\"word\": \"спостереження\", \"count\": 2}]}",
+          "is_error": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Підсумок спостережень: analyze_text → {\"chars\": 120, \"words\": 16, \"sentences\": 2, \"avg_word_length\": 6.31, \"top_words\": [{\"word\": \"міркування\", \"count\": 2}, {\"word\": \"дають\", \"count\": 2}, {\"word\": \"спостереження\", \"count\": 2}]}",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.001,
+          "answer": "Підсумок спостережень: analyze_text → {\"chars\": 120, \"words\": 16, \"sentences\": 2, \"avg_word_length\": 6.31, \"top_words\": [{\"word\": \"міркування\", \"count\": 2}, {\"word\": \"дають\", \"count\": 2}, {\"word\": \"спостереження\", \"count\": 2}]}",
+          "tools_used": [
+            "analyze_text"
+          ],
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "tag": "TC4",
+      "query": "Конвертуй -100 USD у XYZ, і якщо не вийде — конвертуй 100 USD у злоті (PLN).",
+      "provider": "scripted-offline",
+      "config": {
+        "max_steps": 8,
+        "timeout_s": 60.0,
+        "detect_loops": true
+      },
+      "steps": 3,
+      "tool_calls": [
+        {
+          "tool": "convert_currency",
+          "args": {
+            "amount": -100,
+            "from_currency": "USD",
+            "to_currency": "XYZ"
+          },
+          "is_error": true
+        },
+        {
+          "tool": "convert_currency",
+          "args": {
+            "amount": 100,
+            "from_currency": "USD",
+            "to_currency": "PLN"
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.002,
+      "halted": false,
+      "halt_reason": "",
+      "final": {
+        "answer": "Підсумок спостережень: convert_currency → ERROR [ValidationError]: Сума мусить бути більшою за 0; Невідома валюта 'XYZ'. Доступні: USD, EUR, UAH, PLN, GBP; convert_currency → {\"amount\": 100.0, \"from\": \"USD\", \"to\": \"PLN\", \"rate\": 3.98, \"result\": 398.0}",
+        "tools_used": [
+          "convert_currency"
+        ],
+        "confidence": 0.9
+      },
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.0,
+          "content": "Thought: потрібні дані з інструментів (convert_currency).",
+          "tool_calls": [
+            {
+              "name": "convert_currency",
+              "args": {
+                "amount": -100,
+                "from_currency": "USD",
+                "to_currency": "XYZ"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "convert_currency",
+          "args": {
+            "amount": -100,
+            "from_currency": "USD",
+            "to_currency": "XYZ"
+          },
+          "observation": "ERROR [ValidationError]: Сума мусить бути більшою за 0; Невідома валюта 'XYZ'. Доступні: USD, EUR, UAH, PLN, GBP",
+          "is_error": true
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (convert_currency).",
+          "tool_calls": [
+            {
+              "name": "convert_currency",
+              "args": {
+                "amount": 100,
+                "from_currency": "USD",
+                "to_currency": "PLN"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "convert_currency",
+          "args": {
+            "amount": 100,
+            "from_currency": "USD",
+            "to_currency": "PLN"
+          },
+          "observation": "{\"amount\": 100.0, \"from\": \"USD\", \"to\": \"PLN\", \"rate\": 3.98, \"result\": 398.0}",
+          "is_error": false
+        },
+        {
+          "step": 2,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Підсумок спостережень: convert_currency → ERROR [ValidationError]: Сума мусить бути більшою за 0; Невідома валюта 'XYZ'. Доступні: USD, EUR, UAH, PLN, GBP; convert_currency → {\"amount\": 100.0, \"from\": \"USD\", \"to\": \"PLN\", \"rate\": 3.98, \"result\": 398.0}",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 3,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Підсумок спостережень: convert_currency → ERROR [ValidationError]: Сума мусить бути більшою за 0; Невідома валюта 'XYZ'. Доступні: USD, EUR, UAH, PLN, GBP; convert_currency → {\"amount\": 100.0, \"from\": \"USD\", \"to\": \"PLN\", \"rate\": 3.98, \"result\": 398.0}",
+          "tools_used": [
+            "convert_currency"
+          ],
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "tag": "TC5",
+      "query": "Перевір зациклення: питай погоду в Львові знову і знову.",
+      "provider": "scripted-offline",
+      "config": {
+        "max_steps": 8,
+        "timeout_s": 60.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "get_weather",
+          "args": {
+            "city": "Львів"
+          },
+          "is_error": false
+        },
+        {
+          "tool": "get_weather",
+          "args": {
+            "city": "Львів"
+          },
+          "is_error": true
+        }
+      ],
+      "duration_s": 0.0015,
+      "halted": true,
+      "halt_reason": "loop: повторний виклик get_weather({\"city\": \"Львів\"})",
+      "final": {
+        "answer": "Виконання зупинено захисним механізмом → loop: повторний виклик get_weather({\"city\": \"Львів\"}). Часткові дані отримано інструментами: get_weather.",
+        "tools_used": [
+          "get_weather"
+        ],
+        "confidence": 0.0
+      },
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_weather).",
+          "tool_calls": [
+            {
+              "name": "get_weather",
+              "args": {
+                "city": "Львів"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "get_weather",
+          "args": {
+            "city": "Львів"
+          },
+          "observation": "{\"city\": \"Львів\", \"temp_c\": 15.0, \"description\": \"дощ\", \"humidity_percent\": 81}",
+          "is_error": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_weather).",
+          "tool_calls": [
+            {
+              "name": "get_weather",
+              "args": {
+                "city": "Львів"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "get_weather",
+          "args": {
+            "city": "Львів"
+          },
+          "observation": "ERROR [LoopDetected]: цей виклик уже виконувався, змініть аргументи",
+          "is_error": true
+        },
+        {
+          "step": 2,
+          "type": "guardrail",
+          "elapsed_s": 0.001,
+          "reason": "loop: повторний виклик get_weather({\"city\": \"Львів\"})"
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.001,
+          "answer": "Виконання зупинено захисним механізмом → loop: повторний виклик get_weather({\"city\": \"Львів\"}). Часткові дані отримано інструментами: get_weather.",
+          "tools_used": [
+            "get_weather"
+          ],
+          "confidence": 0.0
+        }
+      ]
+    }
+  ]
+}

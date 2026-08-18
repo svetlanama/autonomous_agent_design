@@ -1,0 +1,147 @@
+{
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "pass_rate_percent": 100.0,
+    "provider": "scripted-offline",
+    "avg_steps": 2.2,
+    "avg_duration_s": 0.0018,
+    "total_tool_calls": 8
+  },
+  "cases": [
+    {
+      "id": "TC1",
+      "query": "Порахуй 15% від 2400 і додай 300 — скільки вийде разом?",
+      "expected": "calculator повертає 660.0; фінальна відповідь містить це число",
+      "actual": "Підсумок спостережень: calculator → {\"expression\": \"2400*0.15+300\", \"result\": 660.0}",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "calculator",
+          "args": {
+            "expression": "2400*0.15+300"
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.0021,
+      "halted": false,
+      "halt_reason": "",
+      "provider": "scripted-offline",
+      "passed": true
+    },
+    {
+      "id": "TC2",
+      "query": "Плануємо бюджет: конвертуй 250 USD у EUR і скажи, яка погода в Києві.",
+      "expected": "два інструменти за один хід: 230.0 EUR та погода Києва (18.5 °C)",
+      "actual": "Підсумок спостережень: convert_currency → {\"amount\": 250.0, \"from\": \"USD\", \"to\": \"EUR\", \"rate\": 0.92, \"result\": 230.0}; get_weather → {\"city\": \"Київ\", \"temp_c\": 18.5, \"description\": \"мінлива хмарність\", \"humidity_percent\": 62}",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "convert_currency",
+          "args": {
+            "amount": 250,
+            "from_currency": "USD",
+            "to_currency": "EUR"
+          },
+          "is_error": false
+        },
+        {
+          "tool": "get_weather",
+          "args": {
+            "city": "Київ"
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.0018,
+      "halted": false,
+      "halt_reason": "",
+      "provider": "scripted-offline",
+      "passed": true
+    },
+    {
+      "id": "TC3",
+      "query": "Проаналізуй текст: ReAct агент чергує міркування та дії. Дії дають спостереження, а спостереження дають нові міркування.",
+      "expected": "analyze_text повертає статистику без помилок",
+      "actual": "Підсумок спостережень: analyze_text → {\"chars\": 120, \"words\": 16, \"sentences\": 2, \"avg_word_length\": 6.31, \"top_words\": [{\"word\": \"міркування\", \"count\": 2}, {\"word\": \"дають\", \"count\": 2}, {\"word\": \"спостереження\", \"count\": 2}]}",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "analyze_text",
+          "args": {
+            "text": "Проаналізуй текст: ReAct агент чергує міркування та дії. Дії дають спостереження, а спостереження дають нові міркування.",
+            "top_n": 3
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.0015,
+      "halted": false,
+      "halt_reason": "",
+      "provider": "scripted-offline",
+      "passed": true
+    },
+    {
+      "id": "TC4",
+      "query": "Конвертуй -100 USD у XYZ, і якщо не вийде — конвертуй 100 USD у злоті (PLN).",
+      "expected": "перший виклик → ERROR валідації, другий — успішні 398.0 PLN",
+      "actual": "Підсумок спостережень: convert_currency → ERROR [ValidationError]: Сума мусить бути більшою за 0; Невідома валюта 'XYZ'. Доступні: USD, EUR, UAH, PLN, GBP; convert_currency → {\"amount\": 100.0, \"from\": \"USD\", \"to\": \"PLN\", \"rate\": 3.98, \"result\": 398.0}",
+      "steps": 3,
+      "tool_calls": [
+        {
+          "tool": "convert_currency",
+          "args": {
+            "amount": -100,
+            "from_currency": "USD",
+            "to_currency": "XYZ"
+          },
+          "is_error": true
+        },
+        {
+          "tool": "convert_currency",
+          "args": {
+            "amount": 100,
+            "from_currency": "USD",
+            "to_currency": "PLN"
+          },
+          "is_error": false
+        }
+      ],
+      "duration_s": 0.002,
+      "halted": false,
+      "halt_reason": "",
+      "provider": "scripted-offline",
+      "passed": true
+    },
+    {
+      "id": "TC5",
+      "query": "Перевір зациклення: питай погоду в Львові знову і знову.",
+      "expected": "guardrail зупиняє виконання з причиною loop",
+      "actual": "Виконання зупинено захисним механізмом → loop: повторний виклик get_weather({\"city\": \"Львів\"}). Часткові дані отримано інструментами: get_weather.",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "get_weather",
+          "args": {
+            "city": "Львів"
+          },
+          "is_error": false
+        },
+        {
+          "tool": "get_weather",
+          "args": {
+            "city": "Львів"
+          },
+          "is_error": true
+        }
+      ],
+      "duration_s": 0.0015,
+      "halted": true,
+      "halt_reason": "loop: повторний виклик get_weather({\"city\": \"Львів\"})",
+      "provider": "scripted-offline",
+      "passed": true
+    }
+  ]
+}
