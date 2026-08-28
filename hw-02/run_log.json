@@ -1,0 +1,90 @@
+{
+  "runs": [
+    {
+      "tag": "agentic_rag_yes",
+      "thread_id": "rag-karpaty",
+      "query": "Що варто знати про відпочинок у Карпатах і скільки це — 100 USD у гривнях?",
+      "steps_done": 3,
+      "tools": [
+        "search_knowledge",
+        "get_weather",
+        "convert_currency"
+      ],
+      "replans": 0,
+      "used_rag": true,
+      "response": "Готово. Результати кроків: Знайди в базі знань інформацію про відпочинок у Карпатах → {\"query\": \"відпочинок у Карпатах\", \"documents\": [{\"doc_id\": \" | Перевір погоду у Львові → {\"city\": \"Львів\", \"temp_c\": 15.0, \"description\": \"дощ\", \"humidity_percent\": 81} | Конвертуй 100 USD у UAH → {\"amount\": 100.0, \"from\": \"USD\", \"to\": \"UAH\", \"rate\": 41.5, \"result\": 4150.0}"
+    },
+    {
+      "tag": "agentic_rag_no",
+      "thread_id": "calc-only",
+      "query": "Порахуй 15% від 2400 і додай 300.",
+      "steps_done": 1,
+      "tools": [
+        "calculator"
+      ],
+      "replans": 0,
+      "used_rag": false,
+      "response": "Готово. Результати кроків: Порахуй 15% від 2400 і додай 300 → {\"expression\": \"2400*0.15+300\", \"result\": 660.0}"
+    },
+    {
+      "tag": "replanning",
+      "thread_id": "replan-paris",
+      "query": "Порівняй погоду у Львові та в Парижі.",
+      "steps_done": 4,
+      "tools": [
+        "get_weather",
+        "get_weather",
+        "get_weather"
+      ],
+      "replans": 1,
+      "used_rag": false,
+      "response": "Підсумок на основі зібраних даних: Перевір погоду у Львові → {\"city\": \"Львів\", \"temp_c\": 15.0, \"description\": \"дощ\", \"humidity_percent\": 81}; Перевір погоду в Парижі → ERROR [ValidationError]: Немає даних для міста 'Париж'. Доступні: Київ, Львів, Одеса, Харків; Перевір погоду в Одесі → {\"city\": \"Одеса\", \"temp_c\": 24.0, \"description\": \"ясно\", \"humidity_percent\": 55}"
+    },
+    {
+      "tag": "persistence_resume",
+      "thread_id": "persist-demo",
+      "query": "Сплануй відпочинок у Карпатах: знання, погода і 100 USD у гривнях.",
+      "steps_done": 3,
+      "tools": [
+        "search_knowledge",
+        "get_weather",
+        "convert_currency"
+      ],
+      "replans": 0,
+      "used_rag": true,
+      "response": "Готово. Результати кроків: Знайди в базі знань інформацію про відпочинок у Карпатах → {\"query\": \"відпочинок у Карпатах\", \"documents\": [{\"doc_id\": \" | Перевір погоду у Львові → {\"city\": \"Львів\", \"temp_c\": 15.0, \"description\": \"дощ\", \"humidity_percent\": 81} | Конвертуй 100 USD у UAH → {\"amount\": 100.0, \"from\": \"USD\", \"to\": \"UAH\", \"rate\": 41.5, \"result\": 4150.0}"
+    },
+    {
+      "tag": "hitl_approve",
+      "thread_id": "trip-approve",
+      "query": "Сплануй поїздку до Львова на 3 дні з бюджетом 300 USD і заброньюй готель.",
+      "steps_done": 5,
+      "tools": [
+        "search_knowledge",
+        "get_weather",
+        "convert_currency",
+        "calculator",
+        "book_hotel"
+      ],
+      "replans": 0,
+      "used_rag": true,
+      "response": "Готово. Результати кроків: Знайди в базі знань інформацію про Львів та готелі → {\"query\": \"Львів та готелі\", \"documents\": [{\"doc_id\": \"lviv\", \"simi | Перевір погоду у Львові → {\"city\": \"Львів\", \"temp_c\": 15.0, \"description\": \"дощ\", \"humidity_percent\": 81} | Конвертуй 300 USD у UAH → {\"amount\": 300.0, \"from\": \"USD\", \"to\": \"UAH\", \"rate\": 41.5, \"result\": 12450.0} | Порахуй добовий бюджет: поділи отриману суму в гривнях на 3 дні → {\"expression\": \"12450.0/3\", \"result\": 4150.0} | Забронюй готель «Опера» у Львові на 3 ночі → ПІДТВЕРДЖЕНО людиною. {\"booking_id\": \"3F069D92\", \"hotel\": \"Опера\", \"city\": "
+    },
+    {
+      "tag": "hitl_reject",
+      "thread_id": "trip-reject",
+      "query": "Сплануй поїздку до Львова на 3 дні з бюджетом 300 USD і заброньюй готель.",
+      "steps_done": 5,
+      "tools": [
+        "search_knowledge",
+        "get_weather",
+        "convert_currency",
+        "calculator",
+        "book_hotel"
+      ],
+      "replans": 0,
+      "used_rag": true,
+      "response": "Бронювання скасовано за рішенням людини. Зібрані дані (погода, бюджет) збережені у кроках плану — готель можна обрати вручну."
+    }
+  ]
+}
