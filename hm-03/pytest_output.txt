@@ -1,0 +1,27 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.8, pytest-9.1.1, pluggy-1.6.0 -- /Users/svitlanamoiseyenko/.pyenv/versions/3.11.8/bin/python3.11
+rootdir: /Users/svitlanamoiseyenko/Repos/GOIT/autonomous_agent_design/hm-03
+plugins: anyio-4.4.0, langsmith-0.8.9
+collecting ... collected 19 items
+
+test_incident_agent.py::test_service_status_args_normalizes_service PASSED [  5%]
+test_incident_agent.py::test_query_logs_args_defaults_and_level_normalization PASSED [ 10%]
+test_incident_agent.py::test_calculate_sla_args_valid PASSED             [ 15%]
+test_incident_agent.py::test_restart_args_valid PASSED                   [ 21%]
+test_incident_agent.py::test_service_status_args_unknown_service PASSED  [ 26%]
+test_incident_agent.py::test_query_logs_args_invalid_level_and_window PASSED [ 31%]
+test_incident_agent.py::test_calculate_sla_args_downtime_exceeds_period PASSED [ 36%]
+test_incident_agent.py::test_restart_args_protected_service_and_short_reason PASSED [ 42%]
+test_incident_agent.py::test_search_runbooks_args_bounds PASSED          [ 47%]
+test_incident_agent.py::test_get_service_status_returns_standard_json PASSED [ 52%]
+test_incident_agent.py::test_try_tool_returns_error_json_for_invalid_input PASSED [ 57%]
+test_incident_agent.py::test_query_logs_filters_by_level_and_window PASSED [ 63%]
+test_incident_agent.py::test_calculate_sla_numbers PASSED                [ 68%]
+test_incident_agent.py::test_search_runbooks_returns_relevant_document PASSED [ 73%]
+test_incident_agent.py::test_query_logs_fallback_to_status PASSED        [ 78%]
+test_incident_agent.py::test_restart_service_is_marked_risky PASSED      [ 84%]
+test_incident_agent.py::test_react_loop_completes_with_tool_call PASSED  [ 89%]
+test_incident_agent.py::test_react_loop_detection_guardrail PASSED       [ 94%]
+test_incident_agent.py::test_react_max_steps_guardrail PASSED            [100%]
+
+============================== 19 passed in 0.09s ==============================

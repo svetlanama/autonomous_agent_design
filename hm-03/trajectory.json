@@ -1,0 +1,1857 @@
+{
+  "runs": [
+    {
+      "tag": "demo_status_logs",
+      "query": "Перевір статус сервісу payments і подивись його логи помилок за 30 хвилин.",
+      "provider": "scripted-offline",
+      "thread_id": null,
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 3,
+      "tool_calls": [
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "is_error": false,
+          "fallback_tool": null
+        },
+        {
+          "tool": "query_logs",
+          "args": {
+            "service": "payments",
+            "level": "ERROR",
+            "last_minutes": 30
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.0028,
+      "halted": false,
+      "halt_reason": "",
+      "interrupted": false,
+      "final": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)».",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_service_status).",
+          "tool_calls": [
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "payments"
+              }
+            }
+          ],
+          "llm_latency_s": 0.001
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"status\": \"degraded\", \"latency_p95_ms\": 1850, \"error_rate_percent\": 7.4, \"replicas\": 2}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Thought: потрібні дані з інструментів (query_logs).",
+          "tool_calls": [
+            {
+              "name": "query_logs",
+              "args": {
+                "service": "payments",
+                "level": "ERROR",
+                "last_minutes": 30
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "query_logs",
+          "args": {
+            "service": "payments",
+            "level": "ERROR",
+            "last_minutes": 30
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"level\": \"ERROR\", \"last_minutes\": 30, \"count\": 3, \"entries\": [{\"minutes_ago\": 2, \"level\": \"ERROR\", \"message\": \"connection pool exhausted (max=20)\"}, {\"minutes_ago\": 5, \"level\": \"ERROR\", \"message\": \"PSP callback timeout: stripe\"}, {\"minutes_ago\": 25, \"level\": \"ERROR\", \"message\": \"deadlock detected on table transactions\"}]}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 2,
+          "type": "thought",
+          "elapsed_s": 0.003,
+          "content": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)».",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 3,
+          "type": "final_answer",
+          "elapsed_s": 0.003,
+          "answer": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)»."
+        }
+      ]
+    },
+    {
+      "tag": "demo_validation_recovery",
+      "query": "Перевір статус сервісу billing, а якщо його немає — статус payments.",
+      "provider": "scripted-offline",
+      "thread_id": null,
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "billing"
+          },
+          "is_error": true,
+          "fallback_tool": null
+        },
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.0016,
+      "halted": false,
+      "halt_reason": "",
+      "interrupted": false,
+      "final": "Підсумок: get_service_status: помилка — [ValidationError] Невідомий сервіс 'billing'. Доступні: api-gateway, auth-service, payments, postgres-db, notifications; payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2.",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_service_status, get_service_status).",
+          "tool_calls": [
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "billing"
+              }
+            },
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "payments"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "get_service_status",
+          "args": {
+            "service": "billing"
+          },
+          "observation": "{\"status\": \"error\", \"tool\": \"get_service_status\", \"error\": \"[ValidationError] Невідомий сервіс 'billing'. Доступні: api-gateway, auth-service, payments, postgres-db, notifications\"}",
+          "is_error": true,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"status\": \"degraded\", \"latency_p95_ms\": 1850, \"error_rate_percent\": 7.4, \"replicas\": 2}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Підсумок: get_service_status: помилка — [ValidationError] Невідомий сервіс 'billing'. Доступні: api-gateway, auth-service, payments, postgres-db, notifications; payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2.",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Підсумок: get_service_status: помилка — [ValidationError] Невідомий сервіс 'billing'. Доступні: api-gateway, auth-service, payments, postgres-db, notifications; payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2."
+        }
+      ]
+    },
+    {
+      "tag": "demo_fallback",
+      "query": "Сервіс notifications не працює: перевір статус і подивись логи помилок за 60 хвилин.",
+      "provider": "scripted-offline",
+      "thread_id": null,
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 3,
+      "tool_calls": [
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "notifications"
+          },
+          "is_error": false,
+          "fallback_tool": null
+        },
+        {
+          "tool": "query_logs",
+          "args": {
+            "service": "notifications",
+            "level": "ERROR",
+            "last_minutes": 60
+          },
+          "is_error": true,
+          "fallback_tool": "get_service_status"
+        }
+      ],
+      "duration_s": 0.0025,
+      "halted": false,
+      "halt_reason": "",
+      "interrupted": false,
+      "final": "Підсумок: notifications: статус down, p95 latency 0 мс, помилки 100.0%, реплік 0; query_logs: помилка — [RuntimeError] Логи сервісу 'notifications' недоступні у лог-колекторі; fallback get_service_status → notifications: статус down, p95 latency 0 мс, помилки 100.0%, реплік 0.",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_service_status).",
+          "tool_calls": [
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "notifications"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "get_service_status",
+          "args": {
+            "service": "notifications"
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"notifications\", \"status\": \"down\", \"latency_p95_ms\": 0, \"error_rate_percent\": 100.0, \"replicas\": 0}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (query_logs).",
+          "tool_calls": [
+            {
+              "name": "query_logs",
+              "args": {
+                "service": "notifications",
+                "level": "ERROR",
+                "last_minutes": 60
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "query_logs",
+          "args": {
+            "service": "notifications",
+            "level": "ERROR",
+            "last_minutes": 60
+          },
+          "observation": "{\"status\": \"error\", \"tool\": \"query_logs\", \"error\": \"[RuntimeError] Логи сервісу 'notifications' недоступні у лог-колекторі\", \"fallback\": {\"tool\": \"get_service_status\", \"result\": {\"status\": \"ok\", \"data\": {\"service\": \"notifications\", \"status\": \"down\", \"latency_p95_ms\": 0, \"error_rate_percent\": 100.0, \"replicas\": 0}}}}",
+          "is_error": true,
+          "fallback_tool": "get_service_status",
+          "risky": false
+        },
+        {
+          "step": 2,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Підсумок: notifications: статус down, p95 latency 0 мс, помилки 100.0%, реплік 0; query_logs: помилка — [RuntimeError] Логи сервісу 'notifications' недоступні у лог-колекторі; fallback get_service_status → notifications: статус down, p95 latency 0 мс, помилки 100.0%, реплік 0.",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 3,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Підсумок: notifications: статус down, p95 latency 0 мс, помилки 100.0%, реплік 0; query_logs: помилка — [RuntimeError] Логи сервісу 'notifications' недоступні у лог-колекторі; fallback get_service_status → notifications: статус down, p95 latency 0 мс, помилки 100.0%, реплік 0."
+        }
+      ]
+    },
+    {
+      "tag": "guardrail_max_steps",
+      "query": "Порахуй довгий ланцюг SLA крок за кроком.",
+      "provider": "scripted-offline",
+      "thread_id": null,
+      "config": {
+        "max_steps": 3,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 3,
+      "tool_calls": [
+        {
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 1.0,
+            "period_days": 30
+          },
+          "is_error": false,
+          "fallback_tool": null
+        },
+        {
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 2.0,
+            "period_days": 30
+          },
+          "is_error": false,
+          "fallback_tool": null
+        },
+        {
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 3.0,
+            "period_days": 30
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.0023,
+      "halted": true,
+      "halt_reason": "max_steps: досягнуто ліміт 3 ітерацій",
+      "interrupted": false,
+      "final": "Виконання зупинено захисним механізмом → max_steps: досягнуто ліміт 3 ітерацій. Часткові дані отримано інструментами: calculate_sla.",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.0,
+          "content": "Thought: потрібні дані з інструментів (calculate_sla).",
+          "tool_calls": [
+            {
+              "name": "calculate_sla",
+              "args": {
+                "service": "payments",
+                "downtime_minutes": 1.0,
+                "period_days": 30
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 1.0,
+            "period_days": 30
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"period_days\": 30, \"downtime_minutes\": 1.0, \"availability_percent\": 99.9977, \"target_percent\": 99.9, \"error_budget_minutes\": 43.2, \"budget_remaining_minutes\": 42.2, \"sla_breached\": false}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (calculate_sla).",
+          "tool_calls": [
+            {
+              "name": "calculate_sla",
+              "args": {
+                "service": "payments",
+                "downtime_minutes": 2.0,
+                "period_days": 30
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 2.0,
+            "period_days": 30
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"period_days\": 30, \"downtime_minutes\": 2.0, \"availability_percent\": 99.9954, \"target_percent\": 99.9, \"error_budget_minutes\": 43.2, \"budget_remaining_minutes\": 41.2, \"sla_breached\": false}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 2,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Thought: потрібні дані з інструментів (calculate_sla).",
+          "tool_calls": [
+            {
+              "name": "calculate_sla",
+              "args": {
+                "service": "payments",
+                "downtime_minutes": 3.0,
+                "period_days": 30
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 3,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 3.0,
+            "period_days": 30
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"period_days\": 30, \"downtime_minutes\": 3.0, \"availability_percent\": 99.9931, \"target_percent\": 99.9, \"error_budget_minutes\": 43.2, \"budget_remaining_minutes\": 40.2, \"sla_breached\": false}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 3,
+          "type": "guardrail",
+          "elapsed_s": 0.002,
+          "reason": "max_steps: досягнуто ліміт 3 ітерацій"
+        },
+        {
+          "step": 3,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Виконання зупинено захисним механізмом → max_steps: досягнуто ліміт 3 ітерацій. Часткові дані отримано інструментами: calculate_sla."
+        }
+      ]
+    },
+    {
+      "tag": "guardrail_timeout",
+      "query": "Порахуй довгий ланцюг SLA крок за кроком.",
+      "provider": "scripted-offline",
+      "thread_id": null,
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 0.15,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 1.0,
+            "period_days": 30
+          },
+          "is_error": false,
+          "fallback_tool": null
+        },
+        {
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 2.0,
+            "period_days": 30
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.2139,
+      "halted": true,
+      "halt_reason": "timeout: перевищено 0.15 с (пройшло 0.21 с)",
+      "interrupted": false,
+      "final": "Виконання зупинено захисним механізмом → timeout: перевищено 0.15 с (пройшло 0.21 с). Часткові дані отримано інструментами: calculate_sla.",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.105,
+          "content": "Thought: потрібні дані з інструментів (calculate_sla).",
+          "tool_calls": [
+            {
+              "name": "calculate_sla",
+              "args": {
+                "service": "payments",
+                "downtime_minutes": 1.0,
+                "period_days": 30
+              }
+            }
+          ],
+          "llm_latency_s": 0.105
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.106,
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 1.0,
+            "period_days": 30
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"period_days\": 30, \"downtime_minutes\": 1.0, \"availability_percent\": 99.9977, \"target_percent\": 99.9, \"error_budget_minutes\": 43.2, \"budget_remaining_minutes\": 42.2, \"sla_breached\": false}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.212,
+          "content": "Thought: потрібні дані з інструментів (calculate_sla).",
+          "tool_calls": [
+            {
+              "name": "calculate_sla",
+              "args": {
+                "service": "payments",
+                "downtime_minutes": 2.0,
+                "period_days": 30
+              }
+            }
+          ],
+          "llm_latency_s": 0.105
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.213,
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 2.0,
+            "period_days": 30
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"period_days\": 30, \"downtime_minutes\": 2.0, \"availability_percent\": 99.9954, \"target_percent\": 99.9, \"error_budget_minutes\": 43.2, \"budget_remaining_minutes\": 41.2, \"sla_breached\": false}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 2,
+          "type": "guardrail",
+          "elapsed_s": 0.213,
+          "reason": "timeout: перевищено 0.15 с (пройшло 0.21 с)"
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.214,
+          "answer": "Виконання зупинено захисним механізмом → timeout: перевищено 0.15 с (пройшло 0.21 с). Часткові дані отримано інструментами: calculate_sla."
+        }
+      ]
+    },
+    {
+      "tag": "guardrail_loop_detection",
+      "query": "Перевір зациклення: питай статус api-gateway знову і знову.",
+      "provider": "scripted-offline",
+      "thread_id": null,
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "api-gateway"
+          },
+          "is_error": false,
+          "fallback_tool": null
+        },
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "api-gateway"
+          },
+          "is_error": true,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.0026,
+      "halted": true,
+      "halt_reason": "loop: повторний виклик get_service_status({\"service\": \"api-gateway\"})",
+      "interrupted": false,
+      "final": "Виконання зупинено захисним механізмом → loop: повторний виклик get_service_status({\"service\": \"api-gateway\"}). Часткові дані отримано інструментами: get_service_status.",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_service_status).",
+          "tool_calls": [
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "api-gateway"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "get_service_status",
+          "args": {
+            "service": "api-gateway"
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"api-gateway\", \"status\": \"healthy\", \"latency_p95_ms\": 120, \"error_rate_percent\": 0.2, \"replicas\": 3}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Thought: потрібні дані з інструментів (get_service_status).",
+          "tool_calls": [
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "api-gateway"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "get_service_status",
+          "args": {
+            "service": "api-gateway"
+          },
+          "observation": "{\"status\": \"error\", \"tool\": \"get_service_status\", \"error\": \"Цей виклик уже виконувався — змініть аргументи або завершіть відповідь\"}",
+          "is_error": true,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 2,
+          "type": "guardrail",
+          "elapsed_s": 0.002,
+          "reason": "loop: повторний виклик get_service_status({\"service\": \"api-gateway\"})"
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.003,
+          "answer": "Виконання зупинено захисним механізмом → loop: повторний виклик get_service_status({\"service\": \"api-gateway\"}). Часткові дані отримано інструментами: get_service_status."
+        }
+      ]
+    },
+    {
+      "tag": "memory_1",
+      "query": "Перевір статус сервісу payments.",
+      "provider": "scripted-offline",
+      "thread_id": "incident-42",
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.0031,
+      "halted": false,
+      "halt_reason": "",
+      "interrupted": false,
+      "final": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2.",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_service_status).",
+          "tool_calls": [
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "payments"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"status\": \"degraded\", \"latency_p95_ms\": 1850, \"error_rate_percent\": 7.4, \"replicas\": 2}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2.",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2."
+        }
+      ]
+    },
+    {
+      "tag": "memory_2",
+      "query": "А тепер подивись його логи помилок за 30 хвилин.",
+      "provider": "scripted-offline",
+      "thread_id": "incident-42",
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "query_logs",
+          "args": {
+            "service": "payments",
+            "level": "ERROR",
+            "last_minutes": 30
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.0029,
+      "halted": false,
+      "halt_reason": "",
+      "interrupted": false,
+      "final": "Підсумок: payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)».",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (query_logs).",
+          "tool_calls": [
+            {
+              "name": "query_logs",
+              "args": {
+                "service": "payments",
+                "level": "ERROR",
+                "last_minutes": 30
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "query_logs",
+          "args": {
+            "service": "payments",
+            "level": "ERROR",
+            "last_minutes": 30
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"level\": \"ERROR\", \"last_minutes\": 30, \"count\": 3, \"entries\": [{\"minutes_ago\": 2, \"level\": \"ERROR\", \"message\": \"connection pool exhausted (max=20)\"}, {\"minutes_ago\": 5, \"level\": \"ERROR\", \"message\": \"PSP callback timeout: stripe\"}, {\"minutes_ago\": 25, \"level\": \"ERROR\", \"message\": \"deadlock detected on table transactions\"}]}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Підсумок: payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)».",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Підсумок: payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)»."
+        }
+      ]
+    },
+    {
+      "tag": "rag_yes_runbook",
+      "query": "Що робити, якщо payments деградує: знайди runbook і перевір статус сервісу.",
+      "provider": "scripted-offline",
+      "thread_id": null,
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 3,
+      "tool_calls": [
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "is_error": false,
+          "fallback_tool": null
+        },
+        {
+          "tool": "search_runbooks",
+          "args": {
+            "query": "runbook payments: Що робити, якщо payments деградує: знайди runbook і перевір статус сервісу.",
+            "top_k": 2
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.0027,
+      "halted": false,
+      "halt_reason": "",
+      "interrupted": false,
+      "final": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; runbook «runbook_payments» (similarity 0.352): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул ….",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_service_status).",
+          "tool_calls": [
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "payments"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"status\": \"degraded\", \"latency_p95_ms\": 1850, \"error_rate_percent\": 7.4, \"replicas\": 2}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (search_runbooks).",
+          "tool_calls": [
+            {
+              "name": "search_runbooks",
+              "args": {
+                "query": "runbook payments: Що робити, якщо payments деградує: знайди runbook і перевір статус сервісу.",
+                "top_k": 2
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "search_runbooks",
+          "args": {
+            "query": "runbook payments: Що робити, якщо payments деградує: знайди runbook і перевір статус сервісу.",
+            "top_k": 2
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"query\": \"runbook payments: Що робити, якщо payments деградує: знайди runbook і перевір статус сервісу.\", \"documents\": [{\"doc_id\": \"runbook_payments\", \"similarity\": 0.352, \"text\": \"Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул з'єднань до 40; 3) якщо помилки тривають понад 15 хвилин — перезапустити сервіс зі згодою чергового ліда; 4) відкрити інцидент рівня P1.\"}, {\"doc_id\": \"runbook_notifications\", \"similarity\": 0.33, \"text\": \"Runbook notifications. Симптоми: черга повідомлень зростає, воркери не відповідають, статус down. Дії: перевірити брокер повідомлень, перезапустити воркери, після відновлення повторно надіслати чергу. Логи сервісу експортуються лише у S3 і недоступні у лог-колекторі — використовуйте статус сервісу.\"}]}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 2,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; runbook «runbook_payments» (similarity 0.352): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул ….",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 3,
+          "type": "final_answer",
+          "elapsed_s": 0.003,
+          "answer": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; runbook «runbook_payments» (similarity 0.352): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул …."
+        }
+      ]
+    },
+    {
+      "tag": "rag_yes_policy",
+      "query": "Яка політика ескалації для інциденту P1?",
+      "provider": "scripted-offline",
+      "thread_id": null,
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "search_runbooks",
+          "args": {
+            "query": "Яка політика ескалації для інциденту P1?",
+            "top_k": 2
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.0021,
+      "halted": false,
+      "halt_reason": "",
+      "interrupted": false,
+      "final": "Підсумок: runbook «escalation_policy» (similarity 0.293): Політика ескалації. P1 — повна недоступність платежів або автентифікації: повідомити чергового ліда протягом 5 хвилин, зібрати war room. P2 — деградація одного ….",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (search_runbooks).",
+          "tool_calls": [
+            {
+              "name": "search_runbooks",
+              "args": {
+                "query": "Яка політика ескалації для інциденту P1?",
+                "top_k": 2
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "search_runbooks",
+          "args": {
+            "query": "Яка політика ескалації для інциденту P1?",
+            "top_k": 2
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"query\": \"Яка політика ескалації для інциденту P1?\", \"documents\": [{\"doc_id\": \"escalation_policy\", \"similarity\": 0.293, \"text\": \"Політика ескалації. P1 — повна недоступність платежів або автентифікації: повідомити чергового ліда протягом 5 хвилин, зібрати war room. P2 — деградація одного сервісу: чергового інженера протягом 15 хвилин. P3/P4 — тікет у беклог без негайної ескалації.\"}, {\"doc_id\": \"sla_policy\", \"similarity\": 0.29, \"text\": \"Політика SLA. Цільова доступність для критичних сервісів (payments, api-gateway, auth-service) — 99.9% за 30-денний період, тобто бюджет помилок 43.2 хвилини на місяць. Для некритичних сервісів (notifications) — 99.5%. Якщо бюджет помилок вичерпано, релізи заморожуються до кінця періоду.\"}]}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Підсумок: runbook «escalation_policy» (similarity 0.293): Політика ескалації. P1 — повна недоступність платежів або автентифікації: повідомити чергового ліда протягом 5 хвилин, зібрати war room. P2 — деградація одного ….",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.002,
+          "answer": "Підсумок: runbook «escalation_policy» (similarity 0.293): Політика ескалації. P1 — повна недоступність платежів або автентифікації: повідомити чергового ліда протягом 5 хвилин, зібрати war room. P2 — деградація одного …."
+        }
+      ]
+    },
+    {
+      "tag": "rag_no_status",
+      "query": "Перевір статус сервісу auth-service.",
+      "provider": "scripted-offline",
+      "thread_id": null,
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "auth-service"
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.0012,
+      "halted": false,
+      "halt_reason": "",
+      "interrupted": false,
+      "final": "Підсумок: auth-service: статус healthy, p95 latency 95 мс, помилки 0.1%, реплік 2.",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.0,
+          "content": "Thought: потрібні дані з інструментів (get_service_status).",
+          "tool_calls": [
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "auth-service"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "get_service_status",
+          "args": {
+            "service": "auth-service"
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"auth-service\", \"status\": \"healthy\", \"latency_p95_ms\": 95, \"error_rate_percent\": 0.1, \"replicas\": 2}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Підсумок: auth-service: статус healthy, p95 latency 95 мс, помилки 0.1%, реплік 2.",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.001,
+          "answer": "Підсумок: auth-service: статус healthy, p95 latency 95 мс, помилки 0.1%, реплік 2."
+        }
+      ]
+    },
+    {
+      "tag": "rag_no_sla",
+      "query": "Порахуй SLA payments при 45 хв простою за 30 днів.",
+      "provider": "scripted-offline",
+      "thread_id": null,
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 2,
+      "tool_calls": [
+        {
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 45.0,
+            "period_days": 30
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.0014,
+      "halted": false,
+      "halt_reason": "",
+      "interrupted": false,
+      "final": "Підсумок: payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО.",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.0,
+          "content": "Thought: потрібні дані з інструментів (calculate_sla).",
+          "tool_calls": [
+            {
+              "name": "calculate_sla",
+              "args": {
+                "service": "payments",
+                "downtime_minutes": 45.0,
+                "period_days": 30
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 45.0,
+            "period_days": 30
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"period_days\": 30, \"downtime_minutes\": 45.0, \"availability_percent\": 99.8958, \"target_percent\": 99.9, \"error_budget_minutes\": 43.2, \"budget_remaining_minutes\": -1.8, \"sla_breached\": true}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Підсумок: payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО.",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "final_answer",
+          "elapsed_s": 0.001,
+          "answer": "Підсумок: payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО."
+        }
+      ]
+    },
+    {
+      "tag": "hitl_approve",
+      "query": "Сервіс payments деградує: перевір статус, а потім перезапусти його.",
+      "provider": "scripted-offline",
+      "thread_id": "restart-approve",
+      "steps": 3,
+      "tool_calls": [
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "is_error": false,
+          "fallback_tool": null
+        },
+        {
+          "tool": "restart_service",
+          "args": {
+            "service": "payments",
+            "reason": "Деградація сервісу за даними моніторингу та логів, запит чергового інженера"
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "halted": false,
+      "halt_reason": "",
+      "final": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; payments перезапущено (id 29B60EDD), очікуваний простій 20 с.",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_service_status).",
+          "tool_calls": [
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "payments"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"status\": \"degraded\", \"latency_p95_ms\": 1850, \"error_rate_percent\": 7.4, \"replicas\": 2}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Thought: потрібні дані з інструментів (restart_service).",
+          "tool_calls": [
+            {
+              "name": "restart_service",
+              "args": {
+                "service": "payments",
+                "reason": "Деградація сервісу за даними моніторингу та логів, запит чергового інженера"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.004,
+          "tool": "restart_service",
+          "args": {
+            "service": "payments",
+            "reason": "Деградація сервісу за даними моніторингу та логів, запит чергового інженера"
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"restart_id\": \"29B60EDD\", \"service\": \"payments\", \"reason\": \"Деградація сервісу за даними моніторингу та логів, запит чергового інженера\", \"status\": \"restarting\", \"expected_downtime_s\": 20}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": true
+        },
+        {
+          "step": 2,
+          "type": "thought",
+          "elapsed_s": 0.005,
+          "content": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; payments перезапущено (id 29B60EDD), очікуваний простій 20 с.",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 3,
+          "type": "final_answer",
+          "elapsed_s": 0.005,
+          "answer": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; payments перезапущено (id 29B60EDD), очікуваний простій 20 с."
+        }
+      ]
+    },
+    {
+      "tag": "hitl_reject",
+      "query": "Сервіс payments деградує: перевір статус, а потім перезапусти його.",
+      "provider": "scripted-offline",
+      "thread_id": "restart-reject",
+      "steps": 3,
+      "tool_calls": [
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "halted": false,
+      "halt_reason": "",
+      "final": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; restart_service: помилка — ВІДХИЛЕНО людиною: Спершу збільшимо пул з'єднань за runbook-ом.",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_service_status).",
+          "tool_calls": [
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "payments"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"status\": \"degraded\", \"latency_p95_ms\": 1850, \"error_rate_percent\": 7.4, \"replicas\": 2}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Thought: потрібні дані з інструментів (restart_service).",
+          "tool_calls": [
+            {
+              "name": "restart_service",
+              "args": {
+                "service": "payments",
+                "reason": "Деградація сервісу за даними моніторингу та логів, запит чергового інженера"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "thought",
+          "elapsed_s": 0.004,
+          "content": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; restart_service: помилка — ВІДХИЛЕНО людиною: Спершу збільшимо пул з'єднань за runbook-ом.",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 3,
+          "type": "final_answer",
+          "elapsed_s": 0.005,
+          "answer": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; restart_service: помилка — ВІДХИЛЕНО людиною: Спершу збільшимо пул з'єднань за runbook-ом."
+        }
+      ]
+    },
+    {
+      "tag": "compare_react",
+      "query": "Розслідуй інцидент з payments: перевір статус, переглянь логи помилок за 30 хвилин, знайди runbook що робити і порахуй SLA при 45 хв простою за 30 днів.",
+      "provider": "scripted-offline",
+      "thread_id": null,
+      "config": {
+        "max_steps": 10,
+        "timeout_s": 120.0,
+        "detect_loops": true
+      },
+      "steps": 5,
+      "tool_calls": [
+        {
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "is_error": false,
+          "fallback_tool": null
+        },
+        {
+          "tool": "query_logs",
+          "args": {
+            "service": "payments",
+            "level": "ERROR",
+            "last_minutes": 30
+          },
+          "is_error": false,
+          "fallback_tool": null
+        },
+        {
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 45.0,
+            "period_days": 30
+          },
+          "is_error": false,
+          "fallback_tool": null
+        },
+        {
+          "tool": "search_runbooks",
+          "args": {
+            "query": "runbook payments: Розслідуй інцидент з payments: перевір статус, переглянь логи помилок за 30 хвилин, знайди runbook що робити і порахуй SLA при 45 хв простою за 30 днів.",
+            "top_k": 2
+          },
+          "is_error": false,
+          "fallback_tool": null
+        }
+      ],
+      "duration_s": 0.0041,
+      "halted": false,
+      "halt_reason": "",
+      "interrupted": false,
+      "final": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)»; payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО; runbook «runbook_payments» (similarity 0.36): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул ….",
+      "trajectory": [
+        {
+          "step": 0,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (get_service_status).",
+          "tool_calls": [
+            {
+              "name": "get_service_status",
+              "args": {
+                "service": "payments"
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 1,
+          "type": "observation",
+          "elapsed_s": 0.001,
+          "tool": "get_service_status",
+          "args": {
+            "service": "payments"
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"status\": \"degraded\", \"latency_p95_ms\": 1850, \"error_rate_percent\": 7.4, \"replicas\": 2}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 1,
+          "type": "thought",
+          "elapsed_s": 0.001,
+          "content": "Thought: потрібні дані з інструментів (query_logs).",
+          "tool_calls": [
+            {
+              "name": "query_logs",
+              "args": {
+                "service": "payments",
+                "level": "ERROR",
+                "last_minutes": 30
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 2,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "query_logs",
+          "args": {
+            "service": "payments",
+            "level": "ERROR",
+            "last_minutes": 30
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"level\": \"ERROR\", \"last_minutes\": 30, \"count\": 3, \"entries\": [{\"minutes_ago\": 2, \"level\": \"ERROR\", \"message\": \"connection pool exhausted (max=20)\"}, {\"minutes_ago\": 5, \"level\": \"ERROR\", \"message\": \"PSP callback timeout: stripe\"}, {\"minutes_ago\": 25, \"level\": \"ERROR\", \"message\": \"deadlock detected on table transactions\"}]}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 2,
+          "type": "thought",
+          "elapsed_s": 0.002,
+          "content": "Thought: потрібні дані з інструментів (calculate_sla).",
+          "tool_calls": [
+            {
+              "name": "calculate_sla",
+              "args": {
+                "service": "payments",
+                "downtime_minutes": 45.0,
+                "period_days": 30
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 3,
+          "type": "observation",
+          "elapsed_s": 0.002,
+          "tool": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 45.0,
+            "period_days": 30
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"period_days\": 30, \"downtime_minutes\": 45.0, \"availability_percent\": 99.8958, \"target_percent\": 99.9, \"error_budget_minutes\": 43.2, \"budget_remaining_minutes\": -1.8, \"sla_breached\": true}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 3,
+          "type": "thought",
+          "elapsed_s": 0.003,
+          "content": "Thought: потрібні дані з інструментів (search_runbooks).",
+          "tool_calls": [
+            {
+              "name": "search_runbooks",
+              "args": {
+                "query": "runbook payments: Розслідуй інцидент з payments: перевір статус, переглянь логи помилок за 30 хвилин, знайди runbook що робити і порахуй SLA при 45 хв простою за 30 днів.",
+                "top_k": 2
+              }
+            }
+          ],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 4,
+          "type": "observation",
+          "elapsed_s": 0.003,
+          "tool": "search_runbooks",
+          "args": {
+            "query": "runbook payments: Розслідуй інцидент з payments: перевір статус, переглянь логи помилок за 30 хвилин, знайди runbook що робити і порахуй SLA при 45 хв простою за 30 днів.",
+            "top_k": 2
+          },
+          "observation": "{\"status\": \"ok\", \"data\": {\"query\": \"runbook payments: Розслідуй інцидент з payments: перевір статус, переглянь логи помилок за 30 хвилин, знайди runbook що робити і порахуй SLA при 45 хв простою за 30 днів.\", \"documents\": [{\"doc_id\": \"runbook_payments\", \"similarity\": 0.36, \"text\": \"Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул з'єднань до 40; 3) якщо помилки тривають понад 15 хвилин — перезапустити сервіс зі згодою чергового ліда; 4) відкрити інцидент рівня P1.\"}, {\"doc_id\": \"sla_policy\", \"similarity\": 0.32, \"text\": \"Політика SLA. Цільова доступність для критичних сервісів (payments, api-gateway, auth-service) — 99.9% за 30-денний період, тобто бюджет помилок 43.2 хвилини на місяць. Для некритичних сервісів (notifications) — 99.5%. Якщо бюджет помилок вичерпано, релізи заморожуються до кінця періоду.\"}]}}",
+          "is_error": false,
+          "fallback_tool": null,
+          "risky": false
+        },
+        {
+          "step": 4,
+          "type": "thought",
+          "elapsed_s": 0.004,
+          "content": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)»; payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО; runbook «runbook_payments» (similarity 0.36): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул ….",
+          "tool_calls": [],
+          "llm_latency_s": 0.0
+        },
+        {
+          "step": 5,
+          "type": "final_answer",
+          "elapsed_s": 0.004,
+          "answer": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)»; payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО; runbook «runbook_payments» (similarity 0.36): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул …."
+        }
+      ]
+    }
+  ],
+  "plan_execute_runs": [
+    {
+      "tag": "plan_incident",
+      "query": "Розслідуй інцидент з payments: перевір статус, переглянь логи помилок за 30 хвилин, знайди runbook що робити і порахуй SLA при 45 хв простою за 30 днів.",
+      "provider": "scripted-offline",
+      "plan": [
+        "Перевір статус сервісу payments",
+        "Переглянь логи рівня ERROR сервісу payments за 30 хвилин",
+        "Порахуй SLA сервісу payments при 45 хв простою за 30 днів",
+        "Знайди runbook у базі знань про інцидент з payments",
+        "Сформуй підсумок інциденту для користувача"
+      ],
+      "steps_done": 5,
+      "llm_calls": 15,
+      "tool_calls": [
+        "get_service_status",
+        "query_logs",
+        "calculate_sla",
+        "search_runbooks"
+      ],
+      "replans": 0,
+      "duration_s": 0.0103,
+      "past_steps": [
+        {
+          "step": "Перевір статус сервісу payments",
+          "tools": [
+            "get_service_status"
+          ],
+          "react_steps": 2,
+          "result": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2."
+        },
+        {
+          "step": "Переглянь логи рівня ERROR сервісу payments за 30 хвилин",
+          "tools": [
+            "query_logs"
+          ],
+          "react_steps": 2,
+          "result": "Підсумок: payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)»."
+        },
+        {
+          "step": "Порахуй SLA сервісу payments при 45 хв простою за 30 днів",
+          "tools": [
+            "calculate_sla"
+          ],
+          "react_steps": 2,
+          "result": "Підсумок: payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО."
+        },
+        {
+          "step": "Знайди runbook у базі знань про інцидент з payments",
+          "tools": [
+            "search_runbooks"
+          ],
+          "react_steps": 2,
+          "result": "Підсумок: runbook «runbook_payments» (similarity 0.275): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул …."
+        },
+        {
+          "step": "Сформуй підсумок інциденту для користувача",
+          "tools": [],
+          "react_steps": 1,
+          "result": "Підсумок інциденту: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2. | payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)». | payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО. | runbook «runbook_payments» (similarity 0.275): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільши"
+        }
+      ],
+      "decisions": [
+        {
+          "node": "planner",
+          "action": "plan",
+          "steps": [
+            "Перевір статус сервісу payments",
+            "Переглянь логи рівня ERROR сервісу payments за 30 хвилин",
+            "Порахуй SLA сервісу payments при 45 хв простою за 30 днів",
+            "Знайди runbook у базі знань про інцидент з payments",
+            "Сформуй підсумок інциденту для користувача"
+          ]
+        },
+        {
+          "node": "replanner",
+          "action": "continue",
+          "reason": "план актуальний"
+        },
+        {
+          "node": "replanner",
+          "action": "continue",
+          "reason": "план актуальний"
+        },
+        {
+          "node": "replanner",
+          "action": "continue",
+          "reason": "план актуальний"
+        },
+        {
+          "node": "replanner",
+          "action": "continue",
+          "reason": "план актуальний"
+        },
+        {
+          "node": "replanner",
+          "action": "finish",
+          "reason": "усі кроки плану виконано"
+        }
+      ],
+      "response": "Підсумок інциденту: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2. | payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)». | payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО. | runbook «runbook_payments» (similarity 0.275): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільши"
+    },
+    {
+      "tag": "plan_replanning",
+      "query": "Перевір статус сервісу billing та порахуй SLA при 20 хв простою за 30 днів.",
+      "provider": "scripted-offline",
+      "plan": [
+        "Перевір статус сервісу billing",
+        "Сформуй підсумок інциденту для користувача"
+      ],
+      "steps_done": 3,
+      "llm_calls": 9,
+      "tool_calls": [
+        "get_service_status",
+        "get_service_status"
+      ],
+      "replans": 1,
+      "duration_s": 0.0048,
+      "past_steps": [
+        {
+          "step": "Перевір статус сервісу billing",
+          "tools": [
+            "get_service_status"
+          ],
+          "react_steps": 2,
+          "result": "Підсумок: get_service_status: помилка — [ValidationError] Невідомий сервіс 'billing'. Доступні: api-gateway, auth-service, payments, postgres-db, notifications."
+        },
+        {
+          "step": "Перевір статус сервісу payments",
+          "tools": [
+            "get_service_status"
+          ],
+          "react_steps": 2,
+          "result": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2."
+        },
+        {
+          "step": "Сформуй підсумок інциденту для користувача",
+          "tools": [],
+          "react_steps": 1,
+          "result": "Підсумок інциденту: get_service_status: помилка — [ValidationError] Невідомий сервіс 'billing'. Доступні: api-gateway, auth-service, payments, postgres-db, notifications. | payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2."
+        }
+      ],
+      "decisions": [
+        {
+          "node": "planner",
+          "action": "plan",
+          "steps": [
+            "Перевір статус сервісу billing",
+            "Сформуй підсумок інциденту для користувача"
+          ]
+        },
+        {
+          "node": "replanner",
+          "action": "revise",
+          "reason": "сервіс billing невідомий моніторингу; за runbook-ами платежі обслуговує payments",
+          "steps": [
+            "Перевір статус сервісу payments",
+            "Сформуй підсумок інциденту для користувача"
+          ]
+        },
+        {
+          "node": "replanner",
+          "action": "continue",
+          "reason": "план актуальний"
+        },
+        {
+          "node": "replanner",
+          "action": "finish",
+          "reason": "усі кроки плану виконано"
+        }
+      ],
+      "response": "Підсумок інциденту: get_service_status: помилка — [ValidationError] Невідомий сервіс 'billing'. Доступні: api-gateway, auth-service, payments, postgres-db, notifications. | payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2."
+    },
+    {
+      "tag": "compare_plan",
+      "query": "Розслідуй інцидент з payments: перевір статус, переглянь логи помилок за 30 хвилин, знайди runbook що робити і порахуй SLA при 45 хв простою за 30 днів.",
+      "provider": "scripted-offline",
+      "plan": [
+        "Перевір статус сервісу payments",
+        "Переглянь логи рівня ERROR сервісу payments за 30 хвилин",
+        "Порахуй SLA сервісу payments при 45 хв простою за 30 днів",
+        "Знайди runbook у базі знань про інцидент з payments",
+        "Сформуй підсумок інциденту для користувача"
+      ],
+      "steps_done": 5,
+      "llm_calls": 15,
+      "tool_calls": [
+        "get_service_status",
+        "query_logs",
+        "calculate_sla",
+        "search_runbooks"
+      ],
+      "replans": 0,
+      "duration_s": 0.0084,
+      "past_steps": [
+        {
+          "step": "Перевір статус сервісу payments",
+          "tools": [
+            "get_service_status"
+          ],
+          "react_steps": 2,
+          "result": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2."
+        },
+        {
+          "step": "Переглянь логи рівня ERROR сервісу payments за 30 хвилин",
+          "tools": [
+            "query_logs"
+          ],
+          "react_steps": 2,
+          "result": "Підсумок: payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)»."
+        },
+        {
+          "step": "Порахуй SLA сервісу payments при 45 хв простою за 30 днів",
+          "tools": [
+            "calculate_sla"
+          ],
+          "react_steps": 2,
+          "result": "Підсумок: payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО."
+        },
+        {
+          "step": "Знайди runbook у базі знань про інцидент з payments",
+          "tools": [
+            "search_runbooks"
+          ],
+          "react_steps": 2,
+          "result": "Підсумок: runbook «runbook_payments» (similarity 0.275): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул …."
+        },
+        {
+          "step": "Сформуй підсумок інциденту для користувача",
+          "tools": [],
+          "react_steps": 1,
+          "result": "Підсумок інциденту: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2. | payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)». | payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО. | runbook «runbook_payments» (similarity 0.275): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільши"
+        }
+      ],
+      "decisions": [
+        {
+          "node": "planner",
+          "action": "plan",
+          "steps": [
+            "Перевір статус сервісу payments",
+            "Переглянь логи рівня ERROR сервісу payments за 30 хвилин",
+            "Порахуй SLA сервісу payments при 45 хв простою за 30 днів",
+            "Знайди runbook у базі знань про інцидент з payments",
+            "Сформуй підсумок інциденту для користувача"
+          ]
+        },
+        {
+          "node": "replanner",
+          "action": "continue",
+          "reason": "план актуальний"
+        },
+        {
+          "node": "replanner",
+          "action": "continue",
+          "reason": "план актуальний"
+        },
+        {
+          "node": "replanner",
+          "action": "continue",
+          "reason": "план актуальний"
+        },
+        {
+          "node": "replanner",
+          "action": "continue",
+          "reason": "план актуальний"
+        },
+        {
+          "node": "replanner",
+          "action": "finish",
+          "reason": "усі кроки плану виконано"
+        }
+      ],
+      "response": "Підсумок інциденту: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2. | payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)». | payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО. | runbook «runbook_payments» (similarity 0.275): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільши"
+    }
+  ],
+  "comparison": {
+    "query": "Розслідуй інцидент з payments: перевір статус, переглянь логи помилок за 30 хвилин, знайди runbook що робити і порахуй SLA при 45 хв простою за 30 днів.",
+    "react": {
+      "steps": 5,
+      "duration_s": 0.0041,
+      "final": "Підсумок: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2; payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)»; payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО; runbook «runbook_payments» (similarity 0.36): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул ….",
+      "tool_calls": 4
+    },
+    "plan_execute": {
+      "llm_calls": 15,
+      "steps_done": 5,
+      "duration_s": 0.0084,
+      "response": "Підсумок інциденту: payments: статус degraded, p95 latency 1850 мс, помилки 7.4%, реплік 2. | payments: 3 записів рівня ERROR+ за 30 хв, останній: «connection pool exhausted (max=20)». | payments: доступність 99.8958% при цілі 99.9%, залишок бюджету помилок -1.8 хв — SLA ПОРУШЕНО. | runbook «runbook_payments» (similarity 0.275): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільши",
+      "tool_calls": 4
+    }
+  }
+}
