@@ -1,0 +1,15 @@
+langgraph>=1.0
+langgraph-checkpoint-sqlite>=3.0
+langchain-core>=1.0
+langchain-openai
+langchain-mcp-adapters>=0.3
+mcp>=1.20
+chromadb
+crewai>=1.0
+langfuse
+langsmith
+pydantic>=2
+pytest
+pytest-asyncio
+matplotlib
+jupyter

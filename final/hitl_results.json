@@ -1,0 +1,56 @@
+[
+  {
+    "scenario": "reject",
+    "query": "Перевір статус payments і перезапусти сервіс",
+    "service": "payments",
+    "status_before": "degraded",
+    "status_after": "degraded",
+    "decision": {
+      "tool": "restart_service",
+      "args": {
+        "service": "payments",
+        "reason": "Деградація payments: вичерпано пул з'єднань, за runbook"
+      },
+      "approved": false,
+      "comment": "on-call: спершу збільшити пул з'єднань",
+      "edited": false
+    },
+    "final_answer": "Перезапуск скасовано за рішенням людини. Зібрана діагностика: payments: статус degraded, p95 1850 мс, помилки 7.4%, реплік 2."
+  },
+  {
+    "scenario": "edit",
+    "query": "Перевір статус payments і перезапусти сервіс",
+    "service": "payments",
+    "status_before": "degraded",
+    "status_after": "healthy",
+    "decision": {
+      "tool": "restart_service",
+      "args": {
+        "service": "payments",
+        "reason": "INC-1001: connection pool exhausted, схвалено лідом Payments"
+      },
+      "approved": true,
+      "comment": "on-call: уточнив причину",
+      "edited": true
+    },
+    "final_answer": "Підсумок інциденту: payments: статус degraded, p95 1850 мс, помилки 7.4%, реплік 2. | payments перезапущено (причина: INC-1001: connection pool exhausted, схвалено лідом Payments), новий стан healthy."
+  },
+  {
+    "scenario": "approve",
+    "query": "Перевір статус notifications і перезапусти сервіс",
+    "service": "notifications",
+    "status_before": "down",
+    "status_after": "healthy",
+    "decision": {
+      "tool": "restart_service",
+      "args": {
+        "service": "notifications",
+        "reason": "Деградація notifications: вичерпано пул з'єднань, за runbook"
+      },
+      "approved": true,
+      "comment": "on-call схвалив",
+      "edited": false
+    },
+    "final_answer": "Підсумок інциденту: notifications: статус down, p95 0 мс, помилки 100.0%, реплік 0. | notifications перезапущено (причина: Деградація notifications: вичерпано пул з'єднань, за runbook), новий стан healthy."
+  }
+]

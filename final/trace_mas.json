@@ -1,0 +1,171 @@
+{
+  "summary": {
+    "tracer": "mas-langgraph-notebook",
+    "spans": 17,
+    "llm_calls": 5,
+    "tool_calls": 4,
+    "prompt_chars": 3887,
+    "completion_chars": 492,
+    "total_ms": 11.1
+  },
+  "spans": [
+    {
+      "name": "LangGraph",
+      "kind": "chain",
+      "duration_ms": 11.05,
+      "input_chars": 0,
+      "output_chars": 0,
+      "meta": {},
+      "children": [
+        {
+          "name": "guard",
+          "kind": "chain",
+          "duration_ms": 0.19,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": []
+        },
+        {
+          "name": "supervisor",
+          "kind": "chain",
+          "duration_ms": 0.51,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": [
+            {
+              "name": "RunnableSequence",
+              "kind": "chain",
+              "duration_ms": 0.35,
+              "input_chars": 0,
+              "output_chars": 0,
+              "meta": {},
+              "children": [
+                {
+                  "name": "ScriptedLLM",
+                  "kind": "llm",
+                  "duration_ms": 0.11,
+                  "input_chars": 818,
+                  "output_chars": 160,
+                  "meta": {},
+                  "children": []
+                },
+                {
+                  "name": "PydanticToolsParser",
+                  "kind": "chain",
+                  "duration_ms": 0.05,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "route",
+              "kind": "chain",
+              "duration_ms": 0.01,
+              "input_chars": 0,
+              "output_chars": 0,
+              "meta": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "billing",
+          "kind": "chain",
+          "duration_ms": 8.01,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": [
+            {
+              "name": "ScriptedLLM",
+              "kind": "llm",
+              "duration_ms": 0.11,
+              "input_chars": 377,
+              "output_chars": 42,
+              "meta": {},
+              "children": []
+            },
+            {
+              "name": "get_billing_account",
+              "kind": "tool",
+              "duration_ms": 2.18,
+              "input_chars": 23,
+              "output_chars": 227,
+              "meta": {},
+              "children": [
+                {
+                  "name": "get_billing_account",
+                  "kind": "tool",
+                  "duration_ms": 1.67,
+                  "input_chars": 23,
+                  "output_chars": 376,
+                  "meta": {},
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "ScriptedLLM",
+              "kind": "llm",
+              "duration_ms": 0.09,
+              "input_chars": 646,
+              "output_chars": 43,
+              "meta": {},
+              "children": []
+            },
+            {
+              "name": "calculate_sla",
+              "kind": "tool",
+              "duration_ms": 0.14,
+              "input_chars": 92,
+              "output_chars": 238,
+              "meta": {},
+              "children": []
+            },
+            {
+              "name": "ScriptedLLM",
+              "kind": "llm",
+              "duration_ms": 0.08,
+              "input_chars": 927,
+              "output_chars": 39,
+              "meta": {},
+              "children": []
+            },
+            {
+              "name": "estimate_sla_credit",
+              "kind": "tool",
+              "duration_ms": 0.12,
+              "input_chars": 84,
+              "output_chars": 153,
+              "meta": {},
+              "children": []
+            },
+            {
+              "name": "ScriptedLLM",
+              "kind": "llm",
+              "duration_ms": 0.08,
+              "input_chars": 1119,
+              "output_chars": 208,
+              "meta": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "finalize",
+          "kind": "chain",
+          "duration_ms": 0.06,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": []
+        }
+      ]
+    }
+  ]
+}

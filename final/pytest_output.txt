@@ -1,0 +1,15 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.8, pytest-9.1.1, pluggy-1.6.0 -- /Users/svitlanamoiseyenko/.pyenv/versions/3.11.8/bin/python3.11
+rootdir: /Users/svitlanamoiseyenko/Repos/GOIT/autonomous_agent_design/final
+plugins: repeat-0.9.4, xdist-3.8.0, asyncio-1.4.0, anyio-4.14.2, rerunfailures-16.6, langsmith-0.8.9, deepeval-3.9.6
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 9 items
+test_mcp_server.py::test_list_tools_exposes_five_documented_tools PASSED [ 11%]
+test_mcp_server.py::test_get_service_status_known_and_unknown PASSED     [ 22%]
+test_mcp_server.py::test_query_logs_filters_by_level_and_window PASSED   [ 33%]
+test_mcp_server.py::test_schema_validation_rejects_bad_arguments PASSED  [ 44%]
+test_mcp_server.py::test_restart_service_protects_database_and_heals_stateless PASSED [ 55%]
+test_mcp_server.py::test_open_incident_has_side_effect PASSED            [ 66%]
+test_mcp_server.py::test_get_billing_account PASSED                      [ 77%]
+test_mcp_server.py::test_resources_static_and_template PASSED            [ 88%]
+============================== 9 passed in 0.88s ===============================

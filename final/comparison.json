@@ -1,0 +1,77 @@
+{
+  "table": {
+    "LOC оркестрації": {
+      "langgraph": 300,
+      "crewai": 180
+    },
+    "Викликів LLM за кейс (3 запити)": {
+      "langgraph": 22,
+      "crewai": 10
+    },
+    "Викликів tools за кейс": {
+      "langgraph": 11,
+      "crewai": 7
+    },
+    "Час виконання, с (офлайн-LLM)": {
+      "langgraph": 0.06,
+      "crewai": 0.099
+    },
+    "Маршрутизація": {
+      "langgraph": "supervisor + with_structured_output(RouteDecision)",
+      "crewai": "Process.sequential з context між задачами"
+    },
+    "Стан між агентами": {
+      "langgraph": "TypedDict + reducers + SqliteSaver",
+      "crewai": "текст TaskOutput у context"
+    },
+    "HITL": {
+      "langgraph": "interrupt() / Command(resume) з паузою стану",
+      "crewai": "ApprovalGate у tool-обгортці (без паузи)"
+    },
+    "Plan-and-Execute": {
+      "langgraph": "підграф planner→executor→replanner",
+      "crewai": "немає (ReAct у агента)"
+    }
+  },
+  "langgraph": {
+    "duration_s": 0.06,
+    "llm_calls": 22,
+    "tool_calls": 11,
+    "answers": [
+      "Підсумок інциденту: payments: статус healthy, p95 140 мс, помилки 0.3%, реплік 2. | логи payments (ERROR, 30 хв): connection pool exhausted (max=20) | charge failed for user [EMAIL] card [CARD] | retry storm from  | payments перезапущено (причина: Деградація payments: вичерпано пул з'єднань, за runbook), новий стан healthy.",
+      "За базою знань («runbook_payments», similarity 0.326): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул з'єднань до 40; 3) якщо помилки тривають понад 15 хвилин — перезапустити сервіс зі згодою чергового ліда; 4) відкрити інцидент рівня P1.",
+      "Розрахунок SLA: клієнт ACME Corp (план enterprise, $5000/міс, ціль SLA 99.9%); доступність payments 99.79% при цілі 99.9%, залишок бюджету помилок -46.8 хв — SLA ПОРУШЕНО; компенсація 10% від $5000 = $500.00."
+    ]
+  },
+  "crewai": {
+    "blocked": false,
+    "tasks": [
+      {
+        "agent": "tech",
+        "raw": "payments: статус degraded, p95 1850 мс, помилки 7.4%, реплік 2; логи payments (ERROR, 30 хв): connection pool exhausted (max=20) | charge failed for user [EMAIL] card [CARD] | retry storm from client [PHONE] (ip [IP]); payments перезапущено (причина: Деградація payments: вичерпано пул з'єднань, за runbook), новий стан healthy."
+      },
+      {
+        "agent": "researcher",
+        "raw": "За базою знань («runbook_payments», similarity 0.326): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул з'єднань до 40; 3) якщо помилки тривають понад 15 хвилин — перезапустити сервіс зі згодою чергового ліда; 4) відкрити інцидент рівня P1."
+      },
+      {
+        "agent": "billing",
+        "raw": "Розрахунок SLA: клієнт ACME Corp (план enterprise, $5000/міс, ціль SLA 99.9%); доступність payments 99.79% при цілі 99.9%, залишок бюджету помилок -46.8 хв — SLA ПОРУШЕНО; компенсація 10% від $5000 = $500.00."
+      }
+    ],
+    "duration_s": 0.099,
+    "llm_calls": 10,
+    "tool_calls": 7,
+    "hitl": [
+      {
+        "tool": "restart_service",
+        "args": {
+          "service": "payments",
+          "reason": "Деградація payments: вичерпано пул з'єднань, за runbook"
+        },
+        "approved": true,
+        "comment": "on-call схвалив"
+      }
+    ]
+  }
+}

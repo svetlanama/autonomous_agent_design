@@ -1,0 +1,546 @@
+{
+  "summary": {
+    "events": 46,
+    "by_agent": {
+      "supervisor": 4,
+      "billing": 8,
+      "finalize": 4,
+      "tech": 24,
+      "researcher": 4,
+      "general": 2
+    },
+    "by_type": {
+      "route": 4,
+      "thought": 16,
+      "observation": 8,
+      "final_answer": 12,
+      "plan": 1,
+      "replan": 5
+    }
+  },
+  "events": [
+    {
+      "agent_name": "supervisor",
+      "step": 1,
+      "type": "route",
+      "elapsed_s": 0.022,
+      "action": "billing",
+      "reasoning": "ключова ознака «компенсац» → billing"
+    },
+    {
+      "agent_name": "billing",
+      "step": 1,
+      "type": "thought",
+      "elapsed_s": 0.026,
+      "content": "Thought: потрібен тариф і ціль SLA клієнта",
+      "tool_calls": [
+        {
+          "name": "get_billing_account",
+          "args": {
+            "customer_id": "acme"
+          }
+        }
+      ],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "billing",
+      "step": 1,
+      "type": "observation",
+      "elapsed_s": 0.028,
+      "tool": "get_billing_account",
+      "args": {
+        "customer_id": "acme"
+      },
+      "observation": "{\"status\": \"ok\", \"data\": {\"customer_id\": \"acme\", \"customer\": \"ACME Corp\", \"plan\": \"enterprise\", \"monthly_fee_usd\": 5000.0, \"sla_target_percent\": 99.9, \"services\": [\"payments\", \"api-gateway\"], \"contact\": \"ops@acme.example.com\"}}",
+      "is_error": false,
+      "risky": false,
+      "hitl": null
+    },
+    {
+      "agent_name": "billing",
+      "step": 2,
+      "type": "thought",
+      "elapsed_s": 0.028,
+      "content": "Thought: рахую доступність і бюджет помилок",
+      "tool_calls": [
+        {
+          "name": "calculate_sla",
+          "args": {
+            "service": "payments",
+            "downtime_minutes": 90.0,
+            "period_days": 30,
+            "target_percent": 99.9
+          }
+        }
+      ],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "billing",
+      "step": 2,
+      "type": "observation",
+      "elapsed_s": 0.029,
+      "tool": "calculate_sla",
+      "args": {
+        "service": "payments",
+        "downtime_minutes": 90.0,
+        "period_days": 30,
+        "target_percent": 99.9
+      },
+      "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"period_days\": 30, \"downtime_minutes\": 90.0, \"availability_percent\": 99.7917, \"target_percent\": 99.9, \"error_budget_minutes\": 43.2, \"budget_remaining_minutes\": -46.8, \"sla_breached\": true}}",
+      "is_error": false,
+      "risky": false,
+      "hitl": null
+    },
+    {
+      "agent_name": "billing",
+      "step": 3,
+      "type": "thought",
+      "elapsed_s": 0.029,
+      "content": "Thought: рахую компенсацію за політикою",
+      "tool_calls": [
+        {
+          "name": "estimate_sla_credit",
+          "args": {
+            "availability_percent": 99.7917,
+            "target_percent": 99.9,
+            "monthly_fee_usd": 5000.0
+          }
+        }
+      ],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "billing",
+      "step": 3,
+      "type": "observation",
+      "elapsed_s": 0.029,
+      "tool": "estimate_sla_credit",
+      "args": {
+        "availability_percent": 99.7917,
+        "target_percent": 99.9,
+        "monthly_fee_usd": 5000.0
+      },
+      "observation": "{\"status\": \"ok\", \"data\": {\"availability_percent\": 99.7917, \"target_percent\": 99.9, \"credit_percent\": 10, \"credit_usd\": 500.0, \"monthly_fee_usd\": 5000.0}}",
+      "is_error": false,
+      "risky": false,
+      "hitl": null
+    },
+    {
+      "agent_name": "billing",
+      "step": 4,
+      "type": "thought",
+      "elapsed_s": 0.029,
+      "content": "Розрахунок SLA: клієнт ACME Corp (план enterprise, $5000/міс, ціль SLA 99.9%); доступність payments 99.79% при цілі 99.9%, залишок бюджету помилок -46.8 хв — SLA ПОРУШЕНО; компенсація 10% від $5000 = $500.00.",
+      "tool_calls": [],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "billing",
+      "step": 4,
+      "type": "final_answer",
+      "elapsed_s": 0.029,
+      "answer": "Розрахунок SLA: клієнт ACME Corp (план enterprise, $5000/міс, ціль SLA 99.9%); доступність payments 99.79% при цілі 99.9%, залишок бюджету помилок -46.8 хв — SLA ПОРУШЕНО; компенсація 10% від $5000 = $500.00."
+    },
+    {
+      "agent_name": "finalize",
+      "step": 5,
+      "type": "final_answer",
+      "elapsed_s": 0.03,
+      "answer": "Розрахунок SLA: клієнт ACME Corp (план enterprise, $5000/міс, ціль SLA 99.9%); доступність payments 99.79% при цілі 99.9%, залишок бюджету помилок -46.8 хв — SLA ПОРУШЕНО; компенсація 10% від $5000 = $500.00.",
+      "redactions": {},
+      "blocked": false
+    },
+    {
+      "agent_name": "supervisor",
+      "step": 1,
+      "type": "route",
+      "elapsed_s": 0.032,
+      "action": "tech",
+      "reasoning": "ключова ознака «статус» → tech"
+    },
+    {
+      "agent_name": "tech",
+      "step": 0,
+      "type": "plan",
+      "elapsed_s": 0.033,
+      "steps": [
+        "Перевір статус сервісу payments",
+        "Переглянь логи помилок сервісу payments за 30 хвилин",
+        "Відкрий тікет інциденту P1 для payments",
+        "Перезапусти сервіс payments",
+        "Сформуй підсумок інциденту для користувача"
+      ]
+    },
+    {
+      "agent_name": "tech",
+      "step": 1,
+      "type": "thought",
+      "elapsed_s": 0.04,
+      "content": "Thought: перевіряю стан payments",
+      "tool_calls": [
+        {
+          "name": "get_service_status",
+          "args": {
+            "service": "payments"
+          }
+        }
+      ],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "tech",
+      "step": 1,
+      "type": "observation",
+      "elapsed_s": 0.041,
+      "tool": "get_service_status",
+      "args": {
+        "service": "payments"
+      },
+      "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"status\": \"degraded\", \"latency_p95_ms\": 1850, \"error_rate_percent\": 7.4, \"replicas\": 2}}",
+      "is_error": false,
+      "risky": false,
+      "hitl": null
+    },
+    {
+      "agent_name": "tech",
+      "step": 2,
+      "type": "thought",
+      "elapsed_s": 0.041,
+      "content": "payments: статус degraded, p95 1850 мс, помилки 7.4%, реплік 2.",
+      "tool_calls": [],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "tech",
+      "step": 2,
+      "type": "final_answer",
+      "elapsed_s": 0.041,
+      "answer": "payments: статус degraded, p95 1850 мс, помилки 7.4%, реплік 2."
+    },
+    {
+      "agent_name": "tech",
+      "step": 1,
+      "type": "replan",
+      "elapsed_s": 0.042,
+      "action": "continue",
+      "reason": "план актуальний"
+    },
+    {
+      "agent_name": "tech",
+      "step": 1,
+      "type": "thought",
+      "elapsed_s": 0.048,
+      "content": "Thought: збираю логи помилок",
+      "tool_calls": [
+        {
+          "name": "query_logs",
+          "args": {
+            "service": "payments",
+            "level": "ERROR",
+            "last_minutes": 30
+          }
+        }
+      ],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "tech",
+      "step": 1,
+      "type": "observation",
+      "elapsed_s": 0.049,
+      "tool": "query_logs",
+      "args": {
+        "service": "payments",
+        "level": "ERROR",
+        "last_minutes": 30
+      },
+      "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"level\": \"ERROR\", \"last_minutes\": 30, \"entries\": [{\"minutes_ago\": 2, \"level\": \"ERROR\", \"message\": \"connection pool exhausted (max=20)\"}, {\"minutes_ago\": 4, \"level\": \"ERROR\", \"message\": \"charge failed for user ivan.petrenko@example.com card 4111 1111 1111 1111\"}, {\"minutes_ago\": 6, \"level\": \"ERROR\", \"message\": \"retry storm from client +380501234567 (",
+      "is_error": false,
+      "risky": false,
+      "hitl": null
+    },
+    {
+      "agent_name": "tech",
+      "step": 2,
+      "type": "thought",
+      "elapsed_s": 0.05,
+      "content": "логи payments (ERROR, 30 хв): connection pool exhausted (max=20) | charge failed for user ivan.petrenko@example.com card 4111 1111 1111 1111 | retry storm from client +380501234567 (ip 198.51.100.7).",
+      "tool_calls": [],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "tech",
+      "step": 2,
+      "type": "final_answer",
+      "elapsed_s": 0.05,
+      "answer": "логи payments (ERROR, 30 хв): connection pool exhausted (max=20) | charge failed for user ivan.petrenko@example.com card 4111 1111 1111 1111 | retry storm from client +380501234567 (ip 198.51.100.7)."
+    },
+    {
+      "agent_name": "tech",
+      "step": 2,
+      "type": "replan",
+      "elapsed_s": 0.05,
+      "action": "continue",
+      "reason": "план актуальний"
+    },
+    {
+      "agent_name": "tech",
+      "step": 1,
+      "type": "thought",
+      "elapsed_s": 0.056,
+      "content": "Thought: реєструю інцидент",
+      "tool_calls": [
+        {
+          "name": "open_incident",
+          "args": {
+            "service": "payments",
+            "severity": "P1",
+            "summary": "Деградація payments: помилки за даними моніторингу та логів"
+          }
+        }
+      ],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "tech",
+      "step": 1,
+      "type": "observation",
+      "elapsed_s": 0.057,
+      "tool": "open_incident",
+      "args": {
+        "service": "payments",
+        "severity": "P1",
+        "summary": "Деградація payments: помилки за даними моніторингу та логів"
+      },
+      "observation": "{\"status\": \"ok\", \"data\": {\"id\": \"INC-1001\", \"service\": \"payments\", \"severity\": \"P1\", \"summary\": \"Деградація payments: помилки за даними моніторингу та логів\", \"owner\": \"Payments\", \"status\": \"open\", \"response_minutes\": 5}}",
+      "is_error": false,
+      "risky": false,
+      "hitl": null
+    },
+    {
+      "agent_name": "tech",
+      "step": 2,
+      "type": "thought",
+      "elapsed_s": 0.058,
+      "content": "відкрито тікет INC-1001 (P1, власник Payments, реакція 5 хв).",
+      "tool_calls": [],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "tech",
+      "step": 2,
+      "type": "final_answer",
+      "elapsed_s": 0.058,
+      "answer": "відкрито тікет INC-1001 (P1, власник Payments, реакція 5 хв)."
+    },
+    {
+      "agent_name": "tech",
+      "step": 3,
+      "type": "replan",
+      "elapsed_s": 0.058,
+      "action": "continue",
+      "reason": "план актуальний"
+    },
+    {
+      "agent_name": "tech",
+      "step": 1,
+      "type": "thought",
+      "elapsed_s": 0.072,
+      "content": "Thought: потрібен перезапуск (ризикова дія)",
+      "tool_calls": [
+        {
+          "name": "restart_service",
+          "args": {
+            "service": "payments",
+            "reason": "Деградація payments: вичерпано пул з'єднань, за runbook"
+          }
+        }
+      ],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "tech",
+      "step": 1,
+      "type": "observation",
+      "elapsed_s": 0.073,
+      "tool": "restart_service",
+      "args": {
+        "service": "payments",
+        "reason": "Деградація payments: вичерпано пул з'єднань, за runbook"
+      },
+      "observation": "{\"status\": \"ok\", \"data\": {\"service\": \"payments\", \"action\": \"restarted\", \"reason\": \"Деградація payments: вичерпано пул з'єднань, за runbook\", \"new_status\": {\"status\": \"healthy\", \"latency_p95_ms\": 140, \"error_rate_percent\": 0.3, \"replicas\": 2}}}",
+      "is_error": false,
+      "risky": true,
+      "hitl": {
+        "tool": "restart_service",
+        "args": {
+          "service": "payments",
+          "reason": "Деградація payments: вичерпано пул з'єднань, за runbook"
+        },
+        "approved": true,
+        "comment": "on-call схвалив",
+        "edited": false
+      }
+    },
+    {
+      "agent_name": "tech",
+      "step": 2,
+      "type": "thought",
+      "elapsed_s": 0.073,
+      "content": "payments перезапущено (причина: Деградація payments: вичерпано пул з'єднань, за runbook), новий стан healthy.",
+      "tool_calls": [],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "tech",
+      "step": 2,
+      "type": "final_answer",
+      "elapsed_s": 0.073,
+      "answer": "payments перезапущено (причина: Деградація payments: вичерпано пул з'єднань, за runbook), новий стан healthy."
+    },
+    {
+      "agent_name": "tech",
+      "step": 4,
+      "type": "replan",
+      "elapsed_s": 0.074,
+      "action": "continue",
+      "reason": "план актуальний"
+    },
+    {
+      "agent_name": "tech",
+      "step": 1,
+      "type": "thought",
+      "elapsed_s": 0.08,
+      "content": "Підсумок інциденту: payments: статус degraded, p95 1850 мс, помилки 7.4%, реплік 2. | логи payments (ERROR, 30 хв): connection pool exhausted (max=20) | charge failed for user ivan.petrenko@example.com card 4111 1111 1111 1111 | retry storm from  | відкрито тікет INC-1001 (P1, власник Payments, реакція 5 хв). | payments перезапущено (причина: Деградація payments: вичерпано пул з'єднань, за runbook), новий стан healthy.",
+      "tool_calls": [],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "tech",
+      "step": 1,
+      "type": "final_answer",
+      "elapsed_s": 0.08,
+      "answer": "Підсумок інциденту: payments: статус degraded, p95 1850 мс, помилки 7.4%, реплік 2. | логи payments (ERROR, 30 хв): connection pool exhausted (max=20) | charge failed for user ivan.petrenko@example.com card 4111 1111 1111 1111 | retry storm from  | відкрито тікет INC-1001 (P1, власник Payments, реакція 5 хв). | payments перезапущено (причина: Деградація payments: вичерпано пул з'єднань, за runbook), новий стан healthy."
+    },
+    {
+      "agent_name": "tech",
+      "step": 5,
+      "type": "replan",
+      "elapsed_s": 0.08,
+      "action": "finish",
+      "reason": "усі кроки плану виконано"
+    },
+    {
+      "agent_name": "finalize",
+      "step": 10,
+      "type": "final_answer",
+      "elapsed_s": 0.081,
+      "answer": "Підсумок інциденту: payments: статус degraded, p95 1850 мс, помилки 7.4%, реплік 2. | логи payments (ERROR, 30 хв): connection pool exhausted (max=20) | charge failed for user [EMAIL] card [CARD] | retry storm from  | відкрито тікет INC-1001 (P1, власник Payments, реакція 5 хв). | payments перезапущено (причина: Деградація payments: вичерпано пул з'єднань, за runbook), новий стан healthy.",
+      "redactions": {
+        "EMAIL": 1,
+        "CARD": 1
+      },
+      "blocked": false
+    },
+    {
+      "agent_name": "supervisor",
+      "step": 1,
+      "type": "route",
+      "elapsed_s": 0.083,
+      "action": "researcher",
+      "reasoning": "ключова ознака «runbook» → researcher"
+    },
+    {
+      "agent_name": "researcher",
+      "step": 1,
+      "type": "thought",
+      "elapsed_s": 0.085,
+      "content": "Thought: шукаю в базі знань",
+      "tool_calls": [
+        {
+          "name": "search_knowledge",
+          "args": {
+            "query": "Що робити при деградації payments за runbook і яка політика перезапуску?",
+            "top_k": 2
+          }
+        }
+      ],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "researcher",
+      "step": 1,
+      "type": "observation",
+      "elapsed_s": 0.086,
+      "tool": "search_knowledge",
+      "args": {
+        "query": "Що робити при деградації payments за runbook і яка політика перезапуску?",
+        "top_k": 2
+      },
+      "observation": "{\"status\": \"ok\", \"data\": {\"query\": \"Що робити при деградації payments за runbook і яка політика перезапуску?\", \"documents\": [{\"doc_id\": \"runbook_payments\", \"similarity\": 0.326, \"text\": \"Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул з'єднань до 40; 3) якщо помилки тривають понад 15 хвил",
+      "is_error": false,
+      "risky": false,
+      "hitl": null
+    },
+    {
+      "agent_name": "researcher",
+      "step": 2,
+      "type": "thought",
+      "elapsed_s": 0.086,
+      "content": "За базою знань («runbook_payments», similarity 0.326): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул з'єднань до 40; 3) якщо помилки тривають понад 15 хвилин — перезапустити сервіс зі згодою чергового ліда; 4) відкрити інцидент рівня P1.",
+      "tool_calls": [],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "researcher",
+      "step": 2,
+      "type": "final_answer",
+      "elapsed_s": 0.086,
+      "answer": "За базою знань («runbook_payments», similarity 0.326): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул з'єднань до 40; 3) якщо помилки тривають понад 15 хвилин — перезапустити сервіс зі згодою чергового ліда; 4) відкрити інцидент рівня P1."
+    },
+    {
+      "agent_name": "finalize",
+      "step": 3,
+      "type": "final_answer",
+      "elapsed_s": 0.086,
+      "answer": "За базою знань («runbook_payments», similarity 0.326): Runbook payments. Симптоми: connection pool exhausted, таймаути PSP, deadlock у таблиці transactions. Дії: 1) перевірити статус та ERROR-логи; 2) збільшити пул з'єднань до 40; 3) якщо помилки тривають понад 15 хвилин — перезапустити сервіс зі згодою чергового ліда; 4) відкрити інцидент рівня P1.",
+      "redactions": {},
+      "blocked": false
+    },
+    {
+      "agent_name": "supervisor",
+      "step": 1,
+      "type": "route",
+      "elapsed_s": 0.088,
+      "action": "general",
+      "reasoning": "запит не стосується білінгу, інцидентів чи бази знань"
+    },
+    {
+      "agent_name": "general",
+      "step": 1,
+      "type": "thought",
+      "elapsed_s": 0.088,
+      "content": "Я SRE-асистент центру реагування на інциденти. Можу перевірити стан сервісів і логи, розрахувати SLA-компенсацію клієнту або знайти runbook і політику у базі знань.",
+      "tool_calls": [],
+      "llm_latency_s": 0.0
+    },
+    {
+      "agent_name": "general",
+      "step": 1,
+      "type": "final_answer",
+      "elapsed_s": 0.088,
+      "answer": "Я SRE-асистент центру реагування на інциденти. Можу перевірити стан сервісів і логи, розрахувати SLA-компенсацію клієнту або знайти runbook і політику у базі знань."
+    },
+    {
+      "agent_name": "finalize",
+      "step": 2,
+      "type": "final_answer",
+      "elapsed_s": 0.089,
+      "answer": "Я SRE-асистент центру реагування на інциденти. Можу перевірити стан сервісів і логи, розрахувати SLA-компенсацію клієнту або знайти runbook і політику у базі знань.",
+      "redactions": {},
+      "blocked": false
+    }
+  ]
+}
