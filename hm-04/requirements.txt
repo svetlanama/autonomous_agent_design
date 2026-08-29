@@ -1,0 +1,13 @@
+langgraph>=1.0
+langchain-core>=1.0
+langchain-openai
+fastmcp>=3.0
+langchain-mcp-adapters>=0.3
+crewai>=1.0
+langfuse>=3.0
+deepeval>=3.0
+deepteam>=1.0
+pydantic>=2
+pytest
+tiktoken
+matplotlib

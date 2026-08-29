@@ -1,0 +1,23 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.8, pytest-9.1.1, pluggy-1.6.0 -- /Users/svitlanamoiseyenko/.pyenv/versions/3.11.8/bin/python3.11
+rootdir: /Users/svitlanamoiseyenko/Repos/GOIT/autonomous_agent_design/hm-04
+plugins: repeat-0.9.4, xdist-3.8.0, asyncio-1.4.0, anyio-4.14.2, rerunfailures-16.6, langsmith-0.8.9, deepeval-3.9.6
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 14 items
+
+test_mas_security.py::test_mcp_server_exposes_four_tools PASSED          [  7%]
+test_mas_security.py::test_get_service_status_returns_monitoring_record PASSED [ 14%]
+test_mas_security.py::test_query_logs_filters_by_level_and_window PASSED [ 21%]
+test_mas_security.py::test_search_runbooks_ranks_relevant_document_first PASSED [ 28%]
+test_mas_security.py::test_server_side_argument_validation PASSED        [ 35%]
+test_mas_security.py::test_restart_service_refuses_protected_database PASSED [ 42%]
+test_mas_security.py::test_input_guardrail_detects_injection[override-ua] PASSED [ 50%]
+test_mas_security.py::test_input_guardrail_detects_injection[dan-en] PASSED [ 57%]
+test_mas_security.py::test_input_guardrail_detects_injection[fake-system-marker] PASSED [ 64%]
+test_mas_security.py::test_input_guardrail_passes_clean_query_and_decodes_base64 PASSED [ 71%]
+test_mas_security.py::test_tool_guardrail_enforces_allowlist_per_agent PASSED [ 78%]
+test_mas_security.py::test_tool_guardrail_validates_arguments_and_policies PASSED [ 85%]
+test_mas_security.py::test_output_guardrail_redacts_pii PASSED           [ 92%]
+test_mas_security.py::test_hitl_rejection_prevents_restart_in_graph PASSED [100%]
+
+============================== 14 passed in 0.10s ==============================

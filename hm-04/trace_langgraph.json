@@ -1,0 +1,497 @@
+{
+  "summary": {
+    "tracer": "langgraph-mas",
+    "spans": 50,
+    "llm_calls": 13,
+    "tool_calls": 5,
+    "prompt_chars": 25175,
+    "completion_chars": 2264,
+    "total_ms": 39.5
+  },
+  "spans": [
+    {
+      "name": "LangGraph",
+      "kind": "chain",
+      "duration_ms": 28.41,
+      "input_chars": 0,
+      "output_chars": 0,
+      "meta": {},
+      "children": [
+        {
+          "name": "input_guard",
+          "kind": "chain",
+          "duration_ms": 0.34,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": []
+        },
+        {
+          "name": "supervisor",
+          "kind": "chain",
+          "duration_ms": 1.7,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": [
+            {
+              "name": "ScriptedMasLLM",
+              "kind": "llm",
+              "duration_ms": 1.09,
+              "input_chars": 497,
+              "output_chars": 50,
+              "meta": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "monitor",
+          "kind": "chain",
+          "duration_ms": 12.25,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": [
+            {
+              "name": "LangGraph",
+              "kind": "chain",
+              "duration_ms": 11.87,
+              "input_chars": 0,
+              "output_chars": 0,
+              "meta": {},
+              "children": [
+                {
+                  "name": "agent",
+                  "kind": "chain",
+                  "duration_ms": 0.92,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "ScriptedMasLLM",
+                      "kind": "llm",
+                      "duration_ms": 0.43,
+                      "input_chars": 336,
+                      "output_chars": 47,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "tools",
+                  "kind": "chain",
+                  "duration_ms": 2.67,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "get_service_status",
+                      "kind": "tool",
+                      "duration_ms": 2.29,
+                      "input_chars": 23,
+                      "output_chars": 204,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "agent",
+                  "kind": "chain",
+                  "duration_ms": 0.87,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "ScriptedMasLLM",
+                      "kind": "llm",
+                      "duration_ms": 0.38,
+                      "input_chars": 520,
+                      "output_chars": 39,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "tools",
+                  "kind": "chain",
+                  "duration_ms": 2.84,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "query_logs",
+                      "kind": "tool",
+                      "duration_ms": 2.43,
+                      "input_chars": 74,
+                      "output_chars": 473,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "agent",
+                  "kind": "chain",
+                  "duration_ms": 0.74,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "ScriptedMasLLM",
+                      "kind": "llm",
+                      "duration_ms": 0.34,
+                      "input_chars": 980,
+                      "output_chars": 44,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "tools",
+                  "kind": "chain",
+                  "duration_ms": 0.19,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": []
+                },
+                {
+                  "name": "agent",
+                  "kind": "chain",
+                  "duration_ms": 0.77,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "ScriptedMasLLM",
+                      "kind": "llm",
+                      "duration_ms": 0.36,
+                      "input_chars": 1167,
+                      "output_chars": 395,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "supervisor",
+          "kind": "chain",
+          "duration_ms": 0.77,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": [
+            {
+              "name": "ScriptedMasLLM",
+              "kind": "llm",
+              "duration_ms": 0.35,
+              "input_chars": 1790,
+              "output_chars": 50,
+              "meta": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "runbook",
+          "kind": "chain",
+          "duration_ms": 6.03,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": [
+            {
+              "name": "LangGraph",
+              "kind": "chain",
+              "duration_ms": 5.71,
+              "input_chars": 0,
+              "output_chars": 0,
+              "meta": {},
+              "children": [
+                {
+                  "name": "agent",
+                  "kind": "chain",
+                  "duration_ms": 0.78,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "ScriptedMasLLM",
+                      "kind": "llm",
+                      "duration_ms": 0.35,
+                      "input_chars": 1608,
+                      "output_chars": 44,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "tools",
+                  "kind": "chain",
+                  "duration_ms": 2.72,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "search_runbooks",
+                      "kind": "tool",
+                      "duration_ms": 2.3,
+                      "input_chars": 68,
+                      "output_chars": 787,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "agent",
+                  "kind": "chain",
+                  "duration_ms": 0.73,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "ScriptedMasLLM",
+                      "kind": "llm",
+                      "duration_ms": 0.34,
+                      "input_chars": 2378,
+                      "output_chars": 318,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "supervisor",
+          "kind": "chain",
+          "duration_ms": 0.71,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": [
+            {
+              "name": "ScriptedMasLLM",
+              "kind": "llm",
+              "duration_ms": 0.31,
+              "input_chars": 2945,
+              "output_chars": 54,
+              "meta": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "remediation",
+          "kind": "chain",
+          "duration_ms": 2.54,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {
+            "error": "(Interrupt(value={'agent': 'remediation', 'tool': 'restart_service', 'args': {'service': 'payments', 'reason': \"інцидент: вичерпано пул з'єднань payments, за runbook rb-payments-pool\"}, 'question': 'Д"
+          },
+          "children": [
+            {
+              "name": "LangGraph",
+              "kind": "chain",
+              "duration_ms": 2.19,
+              "input_chars": 0,
+              "output_chars": 0,
+              "meta": {
+                "error": "(Interrupt(value={'agent': 'remediation', 'tool': 'restart_service', 'args': {'service': 'payments', 'reason': \"інцидент: вичерпано пул з'єднань payments, за runbook rb-payments-pool\"}, 'question': 'Д"
+              },
+              "children": [
+                {
+                  "name": "agent",
+                  "kind": "chain",
+                  "duration_ms": 0.76,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "ScriptedMasLLM",
+                      "kind": "llm",
+                      "duration_ms": 0.34,
+                      "input_chars": 2822,
+                      "output_chars": 48,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "tools",
+                  "kind": "chain",
+                  "duration_ms": 0.29,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {
+                    "error": "(Interrupt(value={'agent': 'remediation', 'tool': 'restart_service', 'args': {'service': 'payments', 'reason': \"інцидент: вичерпано пул з'єднань payments, за runbook rb-payments-pool\"}, 'question': 'Д"
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LangGraph",
+      "kind": "chain",
+      "duration_ms": 11.11,
+      "input_chars": 0,
+      "output_chars": 0,
+      "meta": {},
+      "children": [
+        {
+          "name": "remediation",
+          "kind": "chain",
+          "duration_ms": 8.41,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": [
+            {
+              "name": "LangGraph",
+              "kind": "chain",
+              "duration_ms": 8.06,
+              "input_chars": 0,
+              "output_chars": 0,
+              "meta": {},
+              "children": [
+                {
+                  "name": "tools",
+                  "kind": "chain",
+                  "duration_ms": 2.51,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "restart_service",
+                      "kind": "tool",
+                      "duration_ms": 2.08,
+                      "input_chars": 107,
+                      "output_chars": 321,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "agent",
+                  "kind": "chain",
+                  "duration_ms": 0.76,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "ScriptedMasLLM",
+                      "kind": "llm",
+                      "duration_ms": 0.35,
+                      "input_chars": 3128,
+                      "output_chars": 51,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "tools",
+                  "kind": "chain",
+                  "duration_ms": 2.14,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "get_service_status",
+                      "kind": "tool",
+                      "duration_ms": 1.78,
+                      "input_chars": 23,
+                      "output_chars": 202,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "name": "agent",
+                  "kind": "chain",
+                  "duration_ms": 0.81,
+                  "input_chars": 0,
+                  "output_chars": 0,
+                  "meta": {},
+                  "children": [
+                    {
+                      "name": "ScriptedMasLLM",
+                      "kind": "llm",
+                      "duration_ms": 0.41,
+                      "input_chars": 3314,
+                      "output_chars": 178,
+                      "meta": {},
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "supervisor",
+          "kind": "chain",
+          "duration_ms": 0.74,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": [
+            {
+              "name": "ScriptedMasLLM",
+              "kind": "llm",
+              "duration_ms": 0.31,
+              "input_chars": 3690,
+              "output_chars": 946,
+              "meta": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "finalize",
+          "kind": "chain",
+          "duration_ms": 0.24,
+          "input_chars": 0,
+          "output_chars": 0,
+          "meta": {},
+          "children": []
+        }
+      ]
+    }
+  ]
+}

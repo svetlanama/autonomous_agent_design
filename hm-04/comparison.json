@@ -1,0 +1,77 @@
+{
+  "rows": [
+    [
+      "LOC оркестрації (без спільних guardrails/MCP)",
+      116,
+      65
+    ],
+    [
+      "Викликів LLM",
+      13,
+      8
+    ],
+    [
+      "Викликів tools",
+      5,
+      5
+    ],
+    [
+      "Символів у промптах (сума)",
+      25175,
+      25070
+    ],
+    [
+      "≈ токенів промптів",
+      9619,
+      9579
+    ],
+    [
+      "Час виконання, с",
+      0.04,
+      0.09
+    ],
+    [
+      "Supervisor / маршрутизація",
+      "явний вузол + Command(goto)",
+      "sequential (hierarchical — лише з реальною LLM)"
+    ],
+    [
+      "Контроль над станом",
+      "повний: TypedDict, reducers, checkpointer",
+      "обмежений: контекст задач, crew memory"
+    ],
+    [
+      "HITL",
+      "interrupt()/Command(resume) з паузою стану",
+      "human_input=True (блокуючий input) або власний gate"
+    ],
+    [
+      "Debugging",
+      "get_state(), history, mermaid, spans на кожен вузол",
+      "verbose-лог, callbacks задач, менше видимості"
+    ],
+    [
+      "Tool guardrail",
+      "у вузлі tools (allowlist + Pydantic)",
+      "у BaseTool._run (allowlist + Pydantic)"
+    ]
+  ],
+  "langgraph": {
+    "tracer": "langgraph-mas",
+    "spans": 50,
+    "llm_calls": 13,
+    "tool_calls": 5,
+    "prompt_chars": 25175,
+    "completion_chars": 2264,
+    "total_ms": 39.5
+  },
+  "crewai": {
+    "tracer": "crewai-mas",
+    "spans": 6,
+    "llm_calls": 8,
+    "tool_calls": 5,
+    "prompt_chars": 25070,
+    "completion_chars": 1525,
+    "total_ms": 82.5
+  }
+}

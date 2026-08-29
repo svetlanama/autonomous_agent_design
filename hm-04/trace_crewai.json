@@ -1,0 +1,78 @@
+{
+  "summary": {
+    "tracer": "crewai-mas",
+    "spans": 6,
+    "llm_calls": 8,
+    "tool_calls": 5,
+    "prompt_chars": 25070,
+    "completion_chars": 1525,
+    "total_ms": 82.5
+  },
+  "spans": [
+    {
+      "name": "crew.kickoff",
+      "kind": "chain",
+      "duration_ms": 82.5,
+      "input_chars": 96,
+      "output_chars": 0,
+      "meta": {},
+      "children": [
+        {
+          "name": "get_service_status",
+          "kind": "tool",
+          "duration_ms": 3.79,
+          "input_chars": 23,
+          "output_chars": 137,
+          "meta": {
+            "agent": "monitor"
+          },
+          "children": []
+        },
+        {
+          "name": "query_logs",
+          "kind": "tool",
+          "duration_ms": 3.05,
+          "input_chars": 74,
+          "output_chars": 421,
+          "meta": {
+            "agent": "monitor"
+          },
+          "children": []
+        },
+        {
+          "name": "search_runbooks",
+          "kind": "tool",
+          "duration_ms": 4.3,
+          "input_chars": 68,
+          "output_chars": 726,
+          "meta": {
+            "agent": "runbook"
+          },
+          "children": []
+        },
+        {
+          "name": "restart_service",
+          "kind": "tool",
+          "duration_ms": 3.39,
+          "input_chars": 78,
+          "output_chars": 229,
+          "meta": {
+            "agent": "remediation"
+          },
+          "children": []
+        },
+        {
+          "name": "get_service_status",
+          "kind": "tool",
+          "duration_ms": 2.91,
+          "input_chars": 23,
+          "output_chars": 135,
+          "meta": {
+            "agent": "remediation"
+          },
+          "children": []
+        }
+      ]
+    }
+  ]
+}
